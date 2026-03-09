@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Strategy · @read.with.prashma 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=Satisfy&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blush: #fce4ec;
+      --petal: #f8bbd0;
+      --rose: #f48fb1;
+      --hot: #e91e8c;
+      --dark-pink: #ad1457;
+      --deep: #880e4f;
+      --cream: #fff8f9;
+      --text: #4a1030;
+      --muted: #9e4068;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Borders ── */
+    .top-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--dark-pink), var(--hot), var(--rose), var(--dark-pink));
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    }
+    .side-bar {
+      width: 3px;
+      background: linear-gradient(180deg, var(--dark-pink), var(--deep), var(--hot), var(--dark-pink));
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 3px; left: 0; right: 0; z-index: 150;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 36px 14px 24px;
+      background: rgba(255,248,249,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--petal);
+    }
+    .nav-logo {
+      font-family: 'Satisfy', cursive;
+      color: var(--dark-pink);
+      font-size: 1.1rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-links {
+      display: flex; gap: 6px; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .nav-links a:hover {
+      background: var(--blush);
+      border-color: var(--petal);
+      color: var(--dark-pink);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 68vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 24px 60px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, var(--petal), transparent 70%);
+      pointer-events: none; animation: blobFloat 9s ease-in-out infinite;
+    }
+    .hero-blob:nth-child(1) { width: 520px; height: 520px; top: -140px; right: -120px; opacity: 0.45; }
+    .hero-blob:nth-child(2) { width: 280px; height: 280px; bottom: -40px; left: -60px; opacity: 0.35; animation-delay: 4s; }
+    @keyframes blobFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--blush); border: 1.5px solid var(--dark-pink);
+      border-radius: 999px; padding: 6px 18px;
+      font-size: 0.78rem; color: var(--dark-pink); font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 22px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 600; line-height: 1.08;
+      color: var(--text);
+      animation: fadeUp 0.8s 0.08s ease both;
+      position: relative; z-index: 1;
+    }
+    .hero h1 em { color: var(--dark-pink); font-style: italic; }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-weight: 300; color: var(--muted);
+      max-width: 500px; line-height: 1.75;
+      margin-top: 18px;
+      animation: fadeUp 0.9s 0.16s ease both;
+      position: relative; z-index: 1;
+    }
+
+    .hero-handle {
+      font-family: 'Satisfy', cursive;
+      font-size: 1.2rem;
+      color: var(--dark-pink);
+      margin-top: 22px;
+      animation: fadeUp 1s 0.22s ease both;
+    }
+
+    /* ── SECTION SHELL ── */
+    section { padding: 72px 24px; position: relative; }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .sec-eyebrow {
+      font-family: 'Satisfy', cursive;
+      color: var(--dark-pink); font-size: 1rem;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .sec-eyebrow::after { content:''; flex:1; height:1px; background:var(--petal); max-width:70px; }
+
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 600; color: var(--text);
+      margin-bottom: 12px;
+    }
+    .sec-body {
+      font-size: 0.97rem; font-weight: 300;
+      color: var(--muted); line-height: 1.85;
+      max-width: 620px;
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(26px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ═══════════════════════════════════════
+       1. RECURRING FORMATS — horizontal scroll cards
+    ═══════════════════════════════════════ */
+    .formats-scroll {
+      display: flex; gap: 16px;
+      overflow-x: auto; padding-bottom: 12px;
+      margin-top: 36px; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .formats-scroll::-webkit-scrollbar { height: 4px; }
+    .formats-scroll::-webkit-scrollbar-track { background: var(--petal); border-radius: 9px; }
+    .formats-scroll::-webkit-scrollbar-thumb { background: var(--dark-pink); border-radius: 9px; }
+
+    .fmt-card {
+      min-width: 220px; flex-shrink: 0;
+      scroll-snap-align: start;
+      background: white;
+      border: 1px solid var(--petal);
+      border-radius: 20px;
+      padding: 26px 22px;
+      position: relative; overflow: hidden;
+      transition: transform 0.25s;
+    }
+    .fmt-card::after {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:3px;
+      background: linear-gradient(90deg, var(--dark-pink), var(--rose));
+    }
+    .fmt-card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(173,20,87,0.10); }
+
+    .fmt-icon { font-size: 2rem; margin-bottom: 14px; }
+    .fmt-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .fmt-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    /* example pill */
+    .fmt-example {
+      margin-top: 14px; display: inline-block;
+      background: var(--blush); border-radius: 999px;
+      padding: 4px 12px; font-size: 0.73rem;
+      color: var(--dark-pink); font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════
+       2. ENGAGEMENT SIGNALS — split layout
+    ═══════════════════════════════════════ */
+    .engage-section { background: var(--blush); border-top: 2px solid var(--dark-pink); border-bottom: 2px solid var(--dark-pink); }
+
+    .engage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 36px;
+    }
+    @media(max-width:600px){ .engage-grid{ grid-template-columns:1fr; } }
+
+    .engage-card {
+      background: white; border-radius: 18px;
+      border: 1px solid var(--petal);
+      padding: 28px 24px;
+      display: flex; gap: 16px;
+    }
+    .engage-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--blush); display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+      border: 1.5px solid var(--petal);
+    }
+    .engage-label {
+      font-weight: 600; font-size: 0.9rem; color: var(--text);
+      margin-bottom: 6px;
+    }
+    .engage-body { font-size: 0.82rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    /* ═══════════════════════════════════════
+       3. AI TOOLS — numbered list
+    ═══════════════════════════════════════ */
+    .ai-list { display: flex; flex-direction: column; gap: 14px; margin-top: 36px; }
+
+    .ai-item {
+      display: flex; gap: 18px; align-items: flex-start;
+      background: white; border-radius: 16px;
+      border: 1px solid var(--petal); padding: 22px 24px;
+      transition: transform 0.22s;
+    }
+    .ai-item:hover { transform: translateX(5px); }
+
+    .ai-num {
+      min-width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--dark-pink), var(--hot));
+      color: white; font-family: 'Playfair Display', serif;
+      font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ai-text strong { display: block; font-weight: 600; color: var(--text); font-size: 0.93rem; margin-bottom: 4px; }
+    .ai-text span { font-size: 0.83rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    .ai-tip {
+      margin-top: 8px; padding: 10px 14px;
+      background: var(--blush); border-radius: 10px;
+      border-left: 3px solid var(--dark-pink);
+      font-size: 0.78rem; color: var(--muted); line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════
+       4. AUDIO & TRENDING — timeline style
+    ═══════════════════════════════════════ */
+    .audio-section { background: linear-gradient(160deg, var(--cream) 0%, var(--blush) 100%); }
+
+    .timeline { margin-top: 36px; position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 8px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(180deg, var(--dark-pink), var(--rose), var(--petal));
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative; margin-bottom: 28px;
+      background: white; border-radius: 16px;
+      border: 1px solid var(--petal); padding: 22px 22px 20px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute; left: -22px; top: 24px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--dark-pink);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--dark-pink);
+    }
+    .tl-head {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px;
+    }
+    .tl-icon { font-size: 1.3rem; }
+    .tl-title { font-weight: 600; color: var(--text); font-size: 0.93rem; }
+    .tl-body { font-size: 0.83rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+    .tl-tag {
+      display: inline-block; margin-top: 10px;
+      background: var(--blush); border: 1px solid var(--petal);
+      border-radius: 999px; padding: 3px 12px;
+      font-size: 0.72rem; color: var(--dark-pink); font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══════════════════════════════════════
+       5. PRIORITY CATEGORIES — big grid
+    ═══════════════════════════════════════ */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px; margin-top: 36px;
+    }
+
+    .cat-card {
+      background: white;
+      border: 1px solid var(--petal);
+      border-radius: 20px; padding: 28px 22px;
+      position: relative; overflow: hidden;
+      transition: all 0.25s;
+    }
+    .cat-card:hover {
+      border-color: var(--dark-pink);
+      box-shadow: 0 8px 28px rgba(173,20,87,0.10);
+      transform: translateY(-4px);
+    }
+    .cat-num {
+      position: absolute; top: 18px; right: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; font-weight: 600;
+      color: var(--petal); line-height: 1;
+    }
+    .cat-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .cat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .cat-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+    .cat-example {
+      margin-top: 14px; padding: 10px 12px;
+      background: var(--blush); border-radius: 10px;
+      font-size: 0.77rem; color: var(--dark-pink);
+      line-height: 1.55; font-style: italic;
+    }
+    .cat-example::before { content: '💡 '; }
+
+    /* ═══════════════════════════════════════
+       QUOTE PULLOUT
+    ═══════════════════════════════════════ */
+    .pullquote {
+      background: var(--blush);
+      border-left: 4px solid var(--dark-pink);
+      border-radius: 0 16px 16px 0;
+      padding: 30px 34px; margin: 48px 0;
+      position: relative;
+    }
+    .pullquote::before {
+      content: '"'; font-family: 'Playfair Display', serif;
+      font-size: 5.5rem; color: var(--petal);
+      position: absolute; top: -12px; left: 16px; line-height: 1;
+    }
+    .pullquote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-style: italic; color: var(--text);
+      line-height: 1.75; position: relative; z-index: 1;
+    }
+    .pullquote cite {
+      display: block; margin-top: 10px;
+      font-size: 0.78rem; color: var(--dark-pink);
+      font-style: normal; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════
+       STATS BAND
+    ═══════════════════════════════════════ */
+    .stats-band {
+      background: var(--text);
+      padding: 56px 24px;
+    }
+    .stats-grid {
+      max-width: 860px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: 32px; text-align: center;
+    }
+    .stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem; font-weight: 600;
+      color: var(--rose); line-height: 1;
+    }
+    .stat-l {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--petal); margin-top: 6px; font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════
+       CTA / FOOTER
+    ═══════════════════════════════════════ */
+    .cta-section {
+      background: linear-gradient(135deg, var(--dark-pink), var(--hot) 55%, var(--rose));
+      padding: 80px 24px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸';
+      position: absolute; top: 14px; left:0; right:0;
+      font-size: 1.1rem; letter-spacing: 22px; opacity: 0.18;
+    }
+    .cta-section::after {
+      content: '🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸 🌸';
+      position: absolute; bottom: 14px; left:0; right:0;
+      font-size: 1.1rem; letter-spacing: 22px; opacity: 0.18;
+    }
+    .cta-eyebrow { font-family:'Satisfy',cursive; color:rgba(255,255,255,0.85); font-size:1rem; margin-bottom:14px; }
+    .cta-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.2rem); font-weight:600; color:white; margin-bottom:18px; }
+    .cta-sub { font-size:0.97rem; color:rgba(255,255,255,0.85); max-width:400px; margin:0 auto 32px; line-height:1.7; font-weight:300; }
+
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white; color: var(--dark-pink);
+      border-radius: 999px; padding: 14px 34px;
+      font-weight: 600; font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .cta-btn:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(0,0,0,0.22); }
+
+    footer {
+      background: var(--text); color: var(--petal);
+      text-align: center; padding: 28px 24px;
+      font-size: 0.78rem; letter-spacing: 0.05em;
+    }
+    footer span { color: var(--rose); }
+
+    /* Responsive */
+    @media(max-width:600px){
+      nav { padding: 12px 16px; }
+      .nav-links { display: none; }
+      .cat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+<div class="side-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🌸 read.with.prashma</div>
+  <ul class="nav-links">
+    <li><a href="#formats">Formats</a></li>
+    <li><a href="#engagement">Engagement</a></li>
+    <li><a href="#ai">AI Tools</a></li>
+    <li><a href="#audio">Audio</a></li>
+    <li><a href="#categories">Categories</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-blob"></div>
+
+  <div class="hero-chip">✦ content strategy doc ✦</div>
+  <h1>Content <em>Strategy</em><br>for Growth 🌷</h1>
+  <p class="hero-sub">A full pookie playbook for reels, engagement, AI tools, trending audio, and priority categories — built for @read.with.prashma.</p>
+  <div class="hero-handle">@read.with.prashma</div>
+</section>
+
+<!-- ════════════════════════════════
+     1. RECURRING FORMATS
+════════════════════════════════ -->
+<section id="formats">
+  <div class="container">
+    <div class="sec-eyebrow reveal">📚 recurring formats</div>
+    <h2 class="sec-title reveal">Reel Formats That Always Work</h2>
+    <p class="sec-body reveal">Certain formats consistently drive engagement on bookstagram. Build a repeatable content cadence around these proven templates — they set audience expectations and keep followers coming back.</p>
+
+    <div class="formats-scroll reveal">
+
+      <div class="fmt-card">
+        <div class="fmt-icon">⚡</div>
+        <div class="fmt-name">Quick Book Reviews</div>
+        <p class="fmt-desc">Rapid 30–60s summaries of 2–3 titles with overlaid text bullets and expressive reactions.</p>
+        <span class="fmt-example">✦ "3 Thrillers You Can't Miss"</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">📅</div>
+        <div class="fmt-name">Monthly Wrap-ups</div>
+        <p class="fmt-desc">Every book read that month, shown with ratings. A satisfying ritual readers love to watch.</p>
+        <span class="fmt-example">✦ March reads · star ratings</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">🗂️</div>
+        <div class="fmt-name">Last · Now · Next</div>
+        <p class="fmt-desc">Showcase the previous, current, and next read in a single stack. Simple format, high relatability.</p>
+        <span class="fmt-example">✦ The reading queue reveal</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">📦</div>
+        <div class="fmt-name">Book Hauls & TBRs</div>
+        <p class="fmt-desc">Unboxing and reveal of new purchases or library finds — with upbeat music and quick title intros.</p>
+        <span class="fmt-example">✦ "What I bought this week"</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">🌿</div>
+        <div class="fmt-name">Cozy Reading Lifestyle</div>
+        <p class="fmt-desc">Aesthetic B-roll — coffee, candles, a window, a page turning. Overlaid with soft ASMR audio.</p>
+        <span class="fmt-example">✦ morning light + new chapter</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">🏰</div>
+        <div class="fmt-name">Genre Spotlights</div>
+        <p class="fmt-desc">Mini round-ups focused on a genre or trope. Stack the covers and briefly explain each world.</p>
+        <span class="fmt-example">✦ "Top 5 Fantasy Worldbuilding"</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">⭐</div>
+        <div class="fmt-name">Quick-Rate Reels</div>
+        <p class="fmt-desc">Hold up a cover with star or emoji overlays. Fast, visual, instantly shareable.</p>
+        <span class="fmt-example">✦ cover + rating in 5 seconds</span>
+      </div>
+
+      <div class="fmt-card">
+        <div class="fmt-icon">🎯</div>
+        <div class="fmt-name">Seasonal Themed Lists</div>
+        <p class="fmt-desc">Curated lists tied to seasons or holidays — Summer Reads 🌸, Spooky Reads 🎃, Cozy Winter 🕯️.</p>
+        <span class="fmt-example">✦ "Spring Break Reads" pastel vibe</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     2. ENGAGEMENT SIGNALS
+════════════════════════════════ -->
+<section id="engagement" class="engage-section">
+  <div class="container">
+    <div class="sec-eyebrow reveal">💬 engagement signals</div>
+    <h2 class="sec-title reveal">What the Algorithm Actually Wants</h2>
+    <p class="sec-body reveal">Instagram's algorithm values certain signals above others. Optimizing for these — intentionally — is the difference between 300 views and 30,000.</p>
+
+    <div class="engage-grid">
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">🔁</div>
+        <div>
+          <div class="engage-label">Shares & DMs — #1 Signal</div>
+          <p class="engage-body">Instagram weights DM shares and saves above likes. Relatable book content, emotional quotes, and funny reads get sent to friends — triggering distribution boosts.</p>
+        </div>
+      </div>
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">⏱️</div>
+        <div>
+          <div class="engage-label">Watch Time & Completion</div>
+          <p class="engage-body">The algorithm tracks how long viewers watch. Reels that hold attention for the full duration rank higher. A seamless loop ending means rewatches — which count as full views.</p>
+        </div>
+      </div>
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">🎣</div>
+        <div>
+          <div class="engage-label">Hook in 1–3 Seconds</div>
+          <p class="engage-body">Bold text, a question, or a surprising reveal in the very first frame prevents the swipe. If the first second doesn't hook, reach is capped — regardless of the rest.</p>
+        </div>
+      </div>
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">🔖</div>
+        <div>
+          <div class="engage-label">Saves = Evergreen Value</div>
+          <p class="engage-body">A saved reel signals "I want to come back to this." Book lists, rec roundups, and genre guides naturally earn saves — build content with save-worthiness in mind.</p>
+        </div>
+      </div>
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">💬</div>
+        <div>
+          <div class="engage-label">CTAs That Actually Work</div>
+          <p class="engage-body">"Tag a friend who needs this book" or "Save for your next TBR" are CTAs that directly map to IG's top signals. Every caption should include one specific, gentle ask.</p>
+        </div>
+      </div>
+
+      <div class="engage-card reveal">
+        <div class="engage-icon">🕐</div>
+        <div>
+          <div class="engage-label">Engage in Hour One</div>
+          <p class="engage-body">Reply to every early comment in the first 60 minutes after posting. Share the reel to Stories immediately. These first-hour signals tell the algorithm the post deserves push.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pullquote reveal">
+      <p>Instagram now rewards creators who make content that viewers genuinely want to share with someone they love — not content optimized for empty likes.</p>
+      <cite>— Algorithm best practices, 2024–25</cite>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-grid">
+    <div class="reveal">
+      <div class="stat-n">2.25×</div>
+      <div class="stat-l">Reel reach vs. photos</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-n">3s</div>
+      <div class="stat-l">Critical hook window</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-n">3–5</div>
+      <div class="stat-l">Reels per week for growth</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-n">90s</div>
+      <div class="stat-l">Max reel length</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-n">24h</div>
+      <div class="stat-l">Window to use trending audio</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     3. AI TOOLS
+════════════════════════════════ -->
+<section id="ai">
+  <div class="container">
+    <div class="sec-eyebrow reveal">🤖 ai tools</div>
+    <h2 class="sec-title reveal">AI to Amplify (Not Replace) Creativity</h2>
+    <p class="sec-body reveal">AI tools save hours while elevating production quality. The key: use them to supercharge authentic storytelling, not to manufacture content that feels hollow.</p>
+
+    <div class="ai-list">
+
+      <div class="ai-item reveal">
+        <div class="ai-num">01</div>
+        <div class="ai-text">
+          <strong>Text-to-Video (Pictory, Runway, Automateed)</strong>
+          <span>Feed a book summary script and get a dynamic mini-video with text animations, stock clips, and transitions — ready to overlay with trending audio.</span>
+          <div class="ai-tip">Tactical use: Animate an "About This Book" synopsis reel. Input the plot summary → the tool builds visual scenes → add your voice or trending sound on top.</div>
+        </div>
+      </div>
+
+      <div class="ai-item reveal">
+        <div class="ai-num">02</div>
+        <div class="ai-text">
+          <strong>Generative Image AI (DALL·E, Stable Diffusion)</strong>
+          <span>Create custom bookish visuals — enchanted library backgrounds, stylized cover art, dreamy reading nook scenes — for reel openers or Story graphics.</span>
+          <div class="ai-tip">Prompt idea: "Cozy reading nook with warm candlelight, soft pink tones, stacked books, watercolor style" → use as reel opening scene.</div>
+        </div>
+      </div>
+
+      <div class="ai-item reveal">
+        <div class="ai-num">03</div>
+        <div class="ai-text">
+          <strong>AI Voiceover (ElevenLabs)</strong>
+          <span>Narrate a book quote, fun fact, or reel script with a polished, studio-quality voice. Great for aesthetic reels where face-to-camera doesn't fit the mood.</span>
+          <div class="ai-tip">Use a calm, warm voice to read a quote from a current read over B-roll footage — then caption it for muted viewers.</div>
+        </div>
+      </div>
+
+      <div class="ai-item reveal">
+        <div class="ai-num">04</div>
+        <div class="ai-text">
+          <strong>Caption & Hook Writing (ChatGPT)</strong>
+          <span>Generate 5–10 opening hook lines for a reel about a specific book or genre, then pick the one that feels most "you." Also useful for caption drafts and hashtag brainstorms.</span>
+          <div class="ai-tip">Ask: "Give me 8 hook lines for an Instagram Reel recommending fantasy novels for fans of The Name of the Wind" — then edit down to your voice.</div>
+        </div>
+      </div>
+
+      <div class="ai-item reveal">
+        <div class="ai-num">05</div>
+        <div class="ai-text">
+          <strong>AI Photo Editing (Photoshop Generative Fill)</strong>
+          <span>Quickly extend a flat-lay photo, remove a cluttered background, or add a dreamy element (flowers, light leaks) to a book photo without a reshoot.</span>
+          <div class="ai-tip">Extend a cozy desk flat-lay to fill a vertical 9:16 frame — saves a full reshoot when you have great source footage in the wrong aspect ratio.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     4. TRENDING AUDIO & SEASONAL
+════════════════════════════════ -->
+<section id="audio" class="audio-section">
+  <div class="container">
+    <div class="sec-eyebrow reveal">🎵 audio & trends</div>
+    <h2 class="sec-title reveal">Riding Trends the Right Way</h2>
+    <p class="sec-body reveal">Trending audio is one of the fastest distribution levers on Instagram — but timing is everything. Jump on a sound within its first 24–72 hours for maximum algorithmic push.</p>
+
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">🔥</div>
+          <div class="tl-title">Use Trending Audio Within 24–72 Hours</div>
+        </div>
+        <p class="tl-body">Instagram pushes content using a newly-hot audio clip hard during its early rise window. After that peak, the boost fades. Check the Reels tab or @creators for weekly trending sounds and build a reel around them fast.</p>
+        <span class="tl-tag">Priority: HIGH</span>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">🎻</div>
+          <div class="tl-title">Match Audio to Aesthetic (e.g. Bridgerton Theme)</div>
+        </div>
+        <p class="tl-body">Trending orchestral or show-themed audio (like a Bridgerton season drop) paired with an elegant book reveal taps into cross-fandom reach. Bookish + pop culture = wide discovery.</p>
+        <span class="tl-tag">Cross-fandom reach</span>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">🌸</div>
+          <div class="tl-title">Seasonal Hooks — Tie Content to the Calendar</div>
+        </div>
+        <p class="tl-body">International Women's Day (Mar 8) book recs, World Book Day lists, spooky October reads, holiday gift guides. Seasonal angles provide built-in search relevance and community momentum.</p>
+        <span class="tl-tag">Evergreen strategy</span>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">💪</div>
+          <div class="tl-title">Empowerment & Women-Centric Audio Trends</div>
+        </div>
+        <p class="tl-body">Empowerment audio trends ("Girls, this is awesome" style) land perfectly on a bookstagram where the community skews toward women readers celebrating books that changed them.</p>
+        <span class="tl-tag">Community fit: strong</span>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">🏷️</div>
+          <div class="tl-title">Bookish Hashtag Challenges</div>
+        </div>
+        <p class="tl-body">#FirstLineFriday, #BookstagramChallenge, #SpooktOber, or create a signature one: #ReadWithPrashmaClub — inviting followers to post their own favourites and tag you.</p>
+        <span class="tl-tag">Community building</span>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <div class="tl-icon">🎵</div>
+          <div class="tl-title">Original Audio — Build a Signature Sound</div>
+        </div>
+        <p class="tl-body">Occasionally post a reel with custom original audio (a voiceover, your own reading of a quote). If it catches on and others use it, the algorithm credits you and extends the reel's lifecycle.</p>
+        <span class="tl-tag">Long-term brand asset</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     5. PRIORITY CATEGORIES
+════════════════════════════════ -->
+<section id="categories" style="background: var(--blush); border-top: 2px solid var(--dark-pink);">
+  <div class="container">
+    <div class="sec-eyebrow reveal">🎯 priority categories</div>
+    <h2 class="sec-title reveal">7 Content Categories to Build Around</h2>
+    <p class="sec-body reveal">Based on what drives engagement, discovery, and community on bookstagram — these are the seven pillars for @read.with.prashma's content calendar.</p>
+
+    <div class="cat-grid">
+
+      <div class="cat-card reveal">
+        <div class="cat-num">01</div>
+        <div class="cat-icon">⚡</div>
+        <div class="cat-title">Quick Book Reviews</div>
+        <p class="cat-desc">Rapid-fire 30–60s reels with on-screen bullets and expressive reactions. Covers shown with zoom transitions.</p>
+        <div class="cat-example">"3 Thrillers You Can't Miss" with suspenseful audio and cover close-ups.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">🌸</div>
+        <div class="cat-num">02</div>
+        <div class="cat-title">Seasonal Themed Lists</div>
+        <p class="cat-desc">Curated lists tied to seasons or cultural moments — always with matching visual and audio palette.</p>
+        <div class="cat-example">"Spring Break Reads 🌸" in pastels, or "Halloween Horror 🎃" with eerie background sound.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">☕</div>
+        <div class="cat-num">03</div>
+        <div class="cat-title">Aesthetic Reading Lifestyle</div>
+        <p class="cat-desc">Visually rich reading ritual vlogs — morning light through a window, turning a first page, tea steaming.</p>
+        <div class="cat-example">B-roll of desk + book crack with ASMR soundtrack. No face needed.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">📦</div>
+        <div class="cat-num">04</div>
+        <div class="cat-title">Book Hauls & TBRs</div>
+        <p class="cat-desc">Unboxing and stack reveals of new purchases or library finds, with upbeat music and quick title intros.</p>
+        <div class="cat-example">Pull books from a bag one-by-one, each with a name card and "will I love it?" rating.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">🏰</div>
+        <div class="cat-num">05</div>
+        <div class="cat-title">Genre Spotlights</div>
+        <p class="cat-desc">Focused mini round-ups by genre or trope with brief world explanations for each title shown.</p>
+        <div class="cat-example">"My Top 5 Fantasy Worldbuilding Novels" — cover shown, 8-second world description each.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">🎮</div>
+        <div class="cat-num">06</div>
+        <div class="cat-title">Interactive & Challenge Reels</div>
+        <p class="cat-desc">Content that prompts participation — tags, replies, "finish the sentence" prompts and community polls.</p>
+        <div class="cat-example">"Tag a friend who needs this romantic comedy" with a goofy reaction face cut.</div>
+      </div>
+
+      <div class="cat-card reveal">
+        <div class="cat-icon">✨</div>
+        <div class="cat-num">07</div>
+        <div class="cat-title">AI-Enhanced Visuals</div>
+        <p class="cat-desc">Unique reels using AI-generated backdrops, animations, or filters that lift production quality visibly.</p>
+        <div class="cat-example">AI-animated magic book opening + favourite quote overlaid. Or AI filter transforming you into a book character.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CTA
+════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-eyebrow">come say hi 🌸</div>
+  <h2 class="cta-title">Follow the bookish journey</h2>
+  <p class="cta-sub">Monthly wrap-ups, cozy reels, honest reviews, and all things books — right on your feed.</p>
+  <a class="cta-btn" href="https://instagram.com/read.with.prashma" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+    @read.with.prashma
+  </a>
+</section>
+
+<footer>
+  made with <span>♥</span> for prashma's growth era · content strategy 2025
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 5) * 0.07}s`;
+    observer.observe(el);
+  });
+
+  // Active nav link highlight on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.background = a.getAttribute('href') === '#' + current ? 'var(--blush)' : '';
+      a.style.borderColor = a.getAttribute('href') === '#' + current ? 'var(--petal)' : 'transparent';
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--dark-pink)' : '';
+    });
+  });
+</script>
+</body>
+</html>

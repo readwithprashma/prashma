@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prashma's little counter ✿</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink-soft:   #fce8ef;
+      --pink-light:  #f9d4e2;
+      --pink-mid:    #f4afc9;
+      --pink-accent: #e8829f;
+      --pink-deep:   #d6607f;
+      --white:       #ffffff;
+      --text-main:   #5c3a4a;
+      --text-muted:  #b08090;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--white);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+      animation: fadeDown .6s ease both;
+    }
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--pink-deep);
+      letter-spacing: -0.5px;
+    }
+    header h1 span { font-style: italic; color: var(--pink-accent); }
+    header p {
+      margin-top: 6px;
+      font-size: .88rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: .4px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border: 1.5px solid var(--pink-light);
+      border-radius: 20px;
+      padding: 28px 30px;
+      width: 100%;
+      max-width: 660px;
+      box-shadow: 0 4px 30px rgba(232,130,159,.08);
+      animation: fadeUp .6s ease both .1s;
+    }
+
+    /* ── Textarea ── */
+    .textarea-wrap { position: relative; }
+    textarea {
+      width: 100%;
+      min-height: 210px;
+      resize: vertical;
+      border: 1.5px solid var(--pink-light);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .97rem;
+      color: var(--text-main);
+      background: var(--white);
+      outline: none;
+      transition: border-color .25s, box-shadow .25s;
+      line-height: 1.7;
+    }
+    textarea::placeholder { color: var(--pink-mid); font-style: italic; }
+    textarea:focus {
+      border-color: var(--pink-accent);
+      box-shadow: 0 0 0 4px rgba(232,130,159,.12);
+    }
+
+    /* ── Buttons row ── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    button {
+      font-family: 'Nunito', sans-serif;
+      font-size: .84rem;
+      font-weight: 600;
+      border: 1.5px solid var(--pink-light);
+      border-radius: 50px;
+      padding: 8px 20px;
+      background: var(--pink-soft);
+      color: var(--pink-deep);
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .2px;
+    }
+    button:hover {
+      background: var(--pink-light);
+      border-color: var(--pink-mid);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(232,130,159,.18);
+    }
+    button:active { transform: translateY(0); }
+    button.danger {
+      border-color: #fad4dc;
+      color: var(--pink-accent);
+    }
+    button.danger:hover { background: #fce0e8; border-color: var(--pink-accent); }
+
+    /* ── Stats grid ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .stat-box {
+      background: var(--pink-soft);
+      border: 1.5px solid var(--pink-light);
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: center;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .stat-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(232,130,159,.13);
+    }
+    .stat-box .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.9rem;
+      color: var(--pink-deep);
+      line-height: 1;
+      transition: transform .15s;
+    }
+    .stat-box .num.pop { animation: pop .25s ease; }
+    .stat-box .label {
+      margin-top: 4px;
+      font-size: .75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    /* ── Advanced extras ── */
+    .extras {
+      margin-top: 22px;
+      border-top: 1.5px dashed var(--pink-light);
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: fadeUp .5s ease both .25s;
+    }
+
+    /* density bar */
+    .density-section h3,
+    .freq-section h3 {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 8px;
+    }
+    .density-bar-wrap {
+      background: var(--pink-light);
+      border-radius: 50px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .density-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink-mid), var(--pink-deep));
+      border-radius: 50px;
+      width: 0%;
+      transition: width .5s cubic-bezier(.4,0,.2,1);
+    }
+    .density-label {
+      margin-top: 5px;
+      font-size: .78rem;
+      color: var(--text-muted);
+    }
+
+    /* word frequency */
+    .freq-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .freq-tag {
+      background: var(--pink-soft);
+      border: 1.4px solid var(--pink-light);
+      border-radius: 50px;
+      padding: 4px 12px;
+      font-size: .79rem;
+      color: var(--pink-deep);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .freq-tag .cnt {
+      background: var(--pink-light);
+      border-radius: 50px;
+      padding: 1px 7px;
+      font-size: .7rem;
+      color: var(--text-muted);
+    }
+
+    /* reading time */
+    .reading-time {
+      font-size: .84rem;
+      color: var(--text-muted);
+    }
+    .reading-time span { color: var(--pink-deep); font-weight: 700; }
+
+    /* copy toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--pink-soft);
+      border: 1.5px solid var(--pink-light);
+      color: var(--pink-deep);
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-size: .85rem;
+      font-weight: 600;
+      box-shadow: 0 6px 24px rgba(232,130,159,.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all .3s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* search/highlight */
+    .search-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .search-row input {
+      width: 100%;
+      border: 1.5px solid var(--pink-light);
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .87rem;
+      color: var(--text-main);
+      background: var(--white);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-row input::placeholder { color: var(--pink-mid); font-style: italic; }
+    .search-row input:focus {
+      border-color: var(--pink-accent);
+      box-shadow: 0 0 0 3px rgba(232,130,159,.1);
+    }
+    .search-row button {
+      width: 100%;
+      padding: 10px 20px;
+    }
+    .search-result {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      padding-left: 4px;
+      min-height: 18px;
+    }
+    .search-result span { color: var(--pink-deep); font-weight: 700; }
+
+    /* goal tracker */
+    .goal-section { display: flex; flex-direction: column; gap: 8px; }
+    .goal-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .goal-row input[type=number] {
+      width: 100%;
+      border: 1.5px solid var(--pink-light);
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .87rem;
+      color: var(--text-main);
+      background: var(--white);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -moz-appearance: textfield;
+    }
+    .goal-row input[type=number]::-webkit-outer-spin-button,
+    .goal-row input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .goal-row input[type=number]:focus {
+      border-color: var(--pink-accent);
+      box-shadow: 0 0 0 3px rgba(232,130,159,.1);
+    }
+    .goal-row button { width: 100%; padding: 10px 20px; }
+    .goal-progress-wrap {
+      background: var(--pink-light);
+      border-radius: 50px;
+      height: 8px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+    .goal-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink-mid), var(--pink-deep));
+      border-radius: 50px;
+      width: 0%;
+      transition: width .5s cubic-bezier(.4,0,.2,1);
+    }
+    .goal-label {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    .goal-label span { color: var(--pink-deep); font-weight: 700; }
+
+    /* footer */
+    footer {
+      margin-top: 40px;
+      font-size: .78rem;
+      color: var(--pink-mid);
+      letter-spacing: .4px;
+      animation: fadeUp .5s ease both .4s;
+    }
+
+    /* animations */
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-16px);} to { opacity:1; transform:none;} }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none;} }
+    @keyframes pop      { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>prashma's <span>little</span> counter ✿</h1>
+  <p>your personal words & letters bestie 🎀</p>
+</header>
+
+<div class="card">
+
+  <!-- textarea -->
+  <div class="textarea-wrap">
+    <textarea id="txt" placeholder="start typing something cute here... ˚₊· ͟͟͞͞➳❥"></textarea>
+  </div>
+
+  <!-- buttons -->
+  <div class="btn-row">
+    <button onclick="copyText()">🌸 copy text</button>
+    <button onclick="copyStats()">✨ copy stats</button>
+    <button onclick="downloadTxt()">💌 download .txt</button>
+    <button onclick="toggleCase()">🔤 toggle CASE</button>
+    <button onclick="removeExtraSpaces()">🪄 clean spaces</button>
+    <button class="danger" onclick="clearAll()">🗑 clear all</button>
+  </div>
+
+  <!-- stat boxes -->
+  <div class="stats">
+    <div class="stat-box">
+      <div class="num" id="s-chars">0</div>
+      <div class="label">characters</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-chars-ns">0</div>
+      <div class="label">chars (no spaces)</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-words">0</div>
+      <div class="label">words</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-sentences">0</div>
+      <div class="label">sentences</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-paras">0</div>
+      <div class="label">paragraphs</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-unique">0</div>
+      <div class="label">unique words</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-avg">0</div>
+      <div class="label">avg word len</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-longest">—</div>
+      <div class="label" id="s-longest-label">longest word</div>
+    </div>
+  </div>
+
+  <!-- advanced extras -->
+  <div class="extras">
+
+    <!-- reading time -->
+    <div class="reading-time" id="reading-time">
+      estimated reading time: <span id="rt-val">less than a sec</span> 🕊️
+    </div>
+
+    <!-- density bar -->
+    <div class="density-section">
+      <h3>📊 text density</h3>
+      <div class="density-bar-wrap">
+        <div class="density-bar" id="density-bar"></div>
+      </div>
+      <div class="density-label" id="density-label">0 / 5000 characters</div>
+    </div>
+
+    <!-- top words -->
+    <div class="freq-section">
+      <h3>💬 top words</h3>
+      <div class="freq-tags" id="freq-tags">
+        <span style="font-size:.8rem;color:var(--text-muted);font-style:italic;">start typing to see ✦</span>
+      </div>
+    </div>
+
+    <!-- word search -->
+    <div>
+      <h3 style="font-size:.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">🔍 find a word</h3>
+      <div class="search-row">
+        <input type="text" id="search-input" placeholder="type a word to search..." />
+        <button onclick="searchWord()">search ✦</button>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+
+    <!-- word goal tracker -->
+    <div class="goal-section">
+      <h3 style="font-size:.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;">🎯 word goal tracker</h3>
+      <div class="goal-row">
+        <input type="number" id="goal-input" placeholder="set a word goal e.g. 500" min="1" />
+        <button onclick="setGoal()">set goal 🎀</button>
+      </div>
+      <div class="goal-progress-wrap"><div class="goal-progress-bar" id="goal-bar"></div></div>
+      <div class="goal-label" id="goal-label">no goal set yet — type one above ✦</div>
+    </div>
+
+    <!-- sentence complexity -->
+    <div>
+      <h3 style="font-size:.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">🧠 sentence complexity</h3>
+      <div class="reading-time" id="complexity-line">write a few sentences to see your complexity score 💭</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>follow me on instagram <a href="https://instagram.com/read.with.prashma" target="_blank" style="color:var(--pink-deep);font-weight:700;text-decoration:none;">@read.with.prashma</a> 🌷</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const txt = document.getElementById('txt');
+  const LIMIT = 5000;
+  let isCaps = false;
+
+  function getWords(str) {
+    return str.trim().split(/\s+/).filter(w => w.length > 0);
+  }
+
+  function pop(id) {
+    const el = document.getElementById(id);
+    el.classList.remove('pop');
+    void el.offsetWidth;
+    el.classList.add('pop');
+  }
+
+  function update() {
+    const val = txt.value;
+    const words = getWords(val);
+    const wordCount = val.trim() === '' ? 0 : words.length;
+    const charCount = val.length;
+    const charNoSpace = val.replace(/\s/g,'').length;
+    const sentences = val.trim() === '' ? 0 : (val.match(/[^.!?]*[.!?]+/g) || []).length;
+    const paras = val.trim() === '' ? 0 : val.split(/\n\s*\n/).filter(p => p.trim().length > 0).length || (val.trim() ? 1 : 0);
+    const uniqueWords = new Set(words.map(w => w.toLowerCase().replace(/[^a-z]/g,''))).size;
+    const avgLen = wordCount === 0 ? 0 : (charNoSpace / wordCount).toFixed(1);
+    const longest = wordCount === 0 ? '—' : words.reduce((a,b) => a.length >= b.length ? a : b);
+
+    // reading time (200wpm)
+    const minutes = wordCount / 200;
+    let rtText;
+    if (wordCount === 0) rtText = 'less than a sec';
+    else if (minutes < 1) rtText = `~${Math.ceil(minutes * 60)} sec`;
+    else rtText = `~${Math.ceil(minutes)} min`;
+
+    setNum('s-chars', charCount);
+    setNum('s-chars-ns', charNoSpace);
+    setNum('s-words', wordCount);
+    setNum('s-sentences', sentences);
+    setNum('s-paras', paras);
+    setNum('s-unique', uniqueWords);
+    setNum('s-avg', avgLen);
+    setStr('s-longest', longest.length > 10 ? longest.slice(0,10)+'…' : longest, longest);
+
+    document.getElementById('rt-val').textContent = rtText;
+
+    // density bar
+    const pct = Math.min(charCount / LIMIT * 100, 100);
+    document.getElementById('density-bar').style.width = pct + '%';
+    document.getElementById('density-label').textContent = `${charCount} / ${LIMIT} characters`;
+
+    // top 6 words (ignore short stop words)
+    const stop = new Set(['the','a','an','and','or','but','in','on','at','to','of','is','it','i','my','we','be','as','by','do','so','no','up','if','he','she','they']);
+    const freq = {};
+    words.forEach(w => {
+      const clean = w.toLowerCase().replace(/[^a-z']/g,'');
+      if (clean.length > 2 && !stop.has(clean)) freq[clean] = (freq[clean]||0)+1;
+    });
+    const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const ftag = document.getElementById('freq-tags');
+    if (top.length === 0) {
+      ftag.innerHTML = '<span style="font-size:.8rem;color:var(--text-muted);font-style:italic;">start typing to see ✦</span>';
+    } else {
+      ftag.innerHTML = top.map(([w,c]) =>
+        `<div class="freq-tag">${w}<span class="cnt">${c}</span></div>`
+      ).join('');
+    }
+  }
+
+  const prevVals = {};
+  function setNum(id, val) {
+    const el = document.getElementById(id);
+    if (prevVals[id] !== val) { el.textContent = val; pop(id); prevVals[id] = val; }
+  }
+  function setStr(id, display, full) {
+    const el = document.getElementById(id);
+    if (prevVals[id] !== full) {
+      el.textContent = display;
+      el.title = full;
+      pop(id);
+      prevVals[id] = full;
+    }
+  }
+
+  txt.addEventListener('input', update);
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function copyText() {
+    if (!txt.value.trim()) { showToast('nothing to copy yet 🌸'); return; }
+    navigator.clipboard.writeText(txt.value).then(() => showToast('copied to clipboard! 🎀'));
+  }
+
+  function copyStats() {
+    const s = `✿ prashma's text stats ✿
+characters: ${document.getElementById('s-chars').textContent}
+chars (no spaces): ${document.getElementById('s-chars-ns').textContent}
+words: ${document.getElementById('s-words').textContent}
+sentences: ${document.getElementById('s-sentences').textContent}
+paragraphs: ${document.getElementById('s-paras').textContent}
+unique words: ${document.getElementById('s-unique').textContent}
+avg word length: ${document.getElementById('s-avg').textContent}
+reading time: ${document.getElementById('rt-val').textContent}`;
+    navigator.clipboard.writeText(s).then(() => showToast('stats copied! ✨'));
+  }
+
+  function downloadTxt() {
+    if (!txt.value.trim()) { showToast('nothing to download yet 🌸'); return; }
+    const blob = new Blob([txt.value], {type:'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'prashma-note.txt';
+    a.click();
+    showToast('downloading! 💌');
+  }
+
+  function toggleCase() {
+    if (!txt.value) return;
+    txt.value = isCaps ? txt.value.toLowerCase() : txt.value.toUpperCase();
+    isCaps = !isCaps;
+    showToast(isCaps ? 'ALL CAPS ON 🔡' : 'lowercase mode 🔡');
+    update();
+  }
+
+  function removeExtraSpaces() {
+    txt.value = txt.value.replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+    update();
+    showToast('spaces cleaned! 🪄');
+  }
+
+  function clearAll() {
+    if (!txt.value) return;
+    txt.value = '';
+    isCaps = false;
+    update();
+    showToast('all cleared 🗑');
+  }
+
+  function searchWord() {
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
+    const result = document.getElementById('search-result');
+    if (!query) { result.innerHTML = ''; return; }
+    const words = getWords(txt.value.toLowerCase());
+    const count = words.filter(w => w.replace(/[^a-z']/g,'') === query).length;
+    if (txt.value.trim() === '') {
+      result.innerHTML = `type some text first 💭`;
+    } else if (count === 0) {
+      result.innerHTML = `"${query}" not found in your text 🌧️`;
+    } else {
+      result.innerHTML = `"${query}" appears <span>${count}</span> time${count>1?'s':''} ✨`;
+    }
+  }
+
+  document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchWord();
+  });
+
+  // ── Goal Tracker ──
+  let wordGoal = 0;
+  function setGoal() {
+    const v = parseInt(document.getElementById('goal-input').value);
+    if (!v || v < 1) { showToast('enter a valid number 🌸'); return; }
+    wordGoal = v;
+    updateGoal(parseInt(document.getElementById('s-words').textContent) || 0);
+    showToast(`goal set to ${v} words! 🎯`);
+  }
+  function updateGoal(wordCount) {
+    if (!wordGoal) return;
+    const pct = Math.min(wordCount / wordGoal * 100, 100);
+    document.getElementById('goal-bar').style.width = pct + '%';
+    const remaining = Math.max(wordGoal - wordCount, 0);
+    const lbl = document.getElementById('goal-label');
+    if (wordCount >= wordGoal) {
+      lbl.innerHTML = `🎉 goal reached! <span>${wordGoal} words</span> written ✨`;
+    } else {
+      lbl.innerHTML = `<span>${wordCount}</span> / ${wordGoal} words — <span>${remaining}</span> to go 💪`;
+    }
+  }
+
+  // ── Complexity Score ──
+  function updateComplexity(val) {
+    const el = document.getElementById('complexity-line');
+    const words = getWords(val);
+    if (words.length < 5) { el.innerHTML = 'write a few sentences to see your complexity score 💭'; return; }
+    const sentences = (val.match(/[^.!?]*[.!?]+/g) || [val]).filter(s => s.trim());
+    const avgWordsPerSentence = sentences.length ? words.length / sentences.length : words.length;
+    const longWords = words.filter(w => w.replace(/[^a-zA-Z]/g,'').length > 6).length;
+    const longWordPct = (longWords / words.length * 100).toFixed(0);
+    let level, emoji;
+    const score = avgWordsPerSentence * 0.5 + longWords * 0.3;
+    if (score < 5)       { level = 'very simple'; emoji = '🌱'; }
+    else if (score < 10) { level = 'easy & breezy'; emoji = '🌸'; }
+    else if (score < 18) { level = 'moderate'; emoji = '📖'; }
+    else if (score < 26) { level = 'complex'; emoji = '🧩'; }
+    else                 { level = 'very complex'; emoji = '🔬'; }
+    el.innerHTML = `${emoji} <span style="color:var(--pink-deep);font-weight:700;">${level}</span> — avg ${avgWordsPerSentence.toFixed(1)} words/sentence · ${longWordPct}% long words`;
+  }
+
+  // patch update() to also call goal & complexity
+  const _origUpdate = update;
+  txt.removeEventListener('input', update);
+  txt.addEventListener('input', () => {
+    update();
+    updateGoal(parseInt(document.getElementById('s-words').textContent) || 0);
+    updateComplexity(txt.value);
+  });
+</script>
+</body>
+</html>

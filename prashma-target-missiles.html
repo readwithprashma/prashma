@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Review Reel Content Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .header-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .status-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+            padding: 12px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .legend-dot.normal {
+            background: #e0e0e0;
+        }
+
+        .legend-dot.script-written {
+            background: #ffd700;
+        }
+
+        .legend-dot.shooting-completed {
+            background: #ff8c00;
+        }
+
+        .legend-dot.posted {
+            background: #28a745;
+        }
+
+        .books-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .book-item {
+            border: 1px solid #ddd;
+            border-bottom: none;
+            transition: all 0.2s ease;
+        }
+
+        .book-item:last-child {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .book-item:hover {
+            background: #f9f9f9;
+        }
+
+        .book-item.normal {
+            background: #f5f5f5;
+        }
+
+        .book-item.script-written {
+            background: #fffacd;
+        }
+
+        .book-item.shooting-completed {
+            background: #ffe8cc;
+        }
+
+        .book-item.posted {
+            background: #d4edda;
+        }
+
+        .status-badge {
+            display: none;
+        }
+
+        /* Desktop view - show all fields in header */
+        .book-header {
+            display: grid;
+            grid-template-columns: 50px 150px 150px 120px 120px 120px 120px 100px 80px;
+            gap: 12px;
+            padding: 14px 16px;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .book-header:hover {
+            background: #f5f5f5;
+        }
+
+        .book-index {
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .book-name {
+            font-weight: 500;
+            color: #1a1a1a;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .book-author {
+            color: #666;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px 8px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .expand-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .expand-btn.expanded::after {
+            content: '▼';
+        }
+
+        .expand-btn::after {
+            content: '▶';
+        }
+
+        .book-content {
+            display: none;
+            padding: 20px 16px;
+            background: #fafbfc;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .book-content.show {
+            display: block;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            background: white;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .script-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .script-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .script-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .save-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #0052a3;
+        }
+
+        .header-row {
+            display: grid;
+            grid-template-columns: 50px 150px 150px 120px 120px 120px 120px 100px 80px;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #f0f2f5;
+            font-weight: 600;
+            font-size: 12px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #ddd;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: -1px;
+        }
+
+        /* Mobile optimization - hide table header and dates on small screens */
+        @media (max-width: 1024px) {
+            .header-row {
+                display: none;
+            }
+
+            .book-header {
+                grid-template-columns: 40px 1fr 80px 40px;
+                gap: 8px;
+            }
+
+            .book-author {
+                display: none;
+            }
+
+            .date-input {
+                display: none;
+            }
+
+            .book-header select {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .status-legend {
+                gap: 12px;
+                font-size: 12px;
+            }
+
+            .book-header {
+                grid-template-columns: 35px 1fr 35px 40px;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .book-index {
+                font-size: 12px;
+            }
+
+            .book-name {
+                font-size: 13px;
+            }
+
+            .book-content {
+                padding: 16px 12px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .script-textarea {
+                font-size: 14px;
+                min-height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Book Review Reel Content Manager</h1>
+            <p class="header-info">Track your book review reel content creation process</p>
+            
+            <div class="status-legend">
+                <div class="legend-item">
+                    <div class="legend-dot normal"></div>
+                    <span>Not Started</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot script-written"></div>
+                    <span>Script Written</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot shooting-completed"></div>
+                    <span>Shooting Completed</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot posted"></div>
+                    <span>Reel Posted</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="header-row">
+            <div>Index</div>
+            <div>Book Name</div>
+            <div>Author</div>
+            <div>Target Date</div>
+            <div>Shoot Date</div>
+            <div>Edit Dates</div>
+            <div>Post Date</div>
+            <div>Status</div>
+            <div></div>
+        </div>
+
+        <div class="books-list" id="booksList"></div>
+    </div>
+
+    <script>
+        const books = [
+            { id: 1, name: "Blue Sisters", author: "Coco Mellors" },
+            { id: 2, name: "Five Survive", author: "Holly Jackson" },
+            { id: 3, name: "Love Letters to a Serial Killer", author: "Tasha Coryell" },
+            { id: 4, name: "Kingdom of the Feared", author: "Kerri Maniscalco" },
+            { id: 5, name: "All This Twisted Glory", author: "Tahereh Mafi" },
+            { id: 6, name: "The Fury", author: "Alex Michaelides" },
+            { id: 7, name: "Off to the Races (Gold Rush Ranch, #1)", author: "Elsie Silver" },
+            { id: 8, name: "The Paris Apartment", author: "Lucy Foley" },
+            { id: 9, name: "Anxious People", author: "Fredrik Backman" },
+            { id: 10, name: "These Infinite Threads", author: "Tahereh Mafi" },
+            { id: 11, name: "The Housemaid Is Watching", author: "Freida McFadden" },
+            { id: 12, name: "Rebel Witch", author: "Kristen Ciccarelli" },
+            { id: 13, name: "I Who Have Never Known Men", author: "Jacqueline Harpman" },
+            { id: 14, name: "Belladonna", author: "Adalyn Grace" },
+            { id: 15, name: "Magnolia Parks", author: "Jessa Hastings" },
+            { id: 16, name: "The Maidens", author: "Alex Michaelides" },
+            { id: 17, name: "The Mindf*ck Series", author: "S.T. Abby" },
+            { id: 18, name: "Kingdom of the Wicked", author: "Kerri Maniscalco" },
+            { id: 19, name: "Hunting Adeline", author: "H.D. Carlton" },
+            { id: 20, name: "Haunting Adeline", author: "H.D. Carlton" },
+            { id: 21, name: "We Were Liars", author: "E. Lockhart" },
+            { id: 22, name: "Heartless", author: "Marissa Meyer" },
+            { id: 23, name: "Never Lie", author: "Freida McFadden" },
+            { id: 24, name: "The Rose Bargain", author: "Sasha Peyton Smith" },
+            { id: 25, name: "Twisted Games", author: "Ana Huang" },
+            { id: 26, name: "Yellowface", author: "R. F. Kuang" },
+            { id: 27, name: "Ace of Spades", author: "Faridah Àbíké-Íyímídé" },
+            { id: 28, name: "The Boyfriend", author: "Freida McFadden" },
+            { id: 29, name: "The Coworker", author: "Freida McFadden" },
+            { id: 30, name: "A Novel Love Story", author: "Ashley Poston" },
+            { id: 31, name: "Hooked", author: "Emily McIntire" },
+            { id: 32, name: "Rock Paper Scissors", author: "Alice Feeney" },
+            { id: 33, name: "Then She Was Gone", author: "Lisa Jewell" },
+            { id: 34, name: "This Woven Kingdom", author: "Tahereh Mafi" },
+            { id: 35, name: "God of Malice", author: "Rina Kent" },
+            { id: 36, name: "Kingdom of the Cursed", author: "Kerri Maniscalco" },
+            { id: 37, name: "Tender Is the Flesh", author: "Agustina Bazterrica" },
+            { id: 38, name: "The Crimson Moth", author: "Kristen Ciccarelli" },
+            { id: 39, name: "The Housemaid's Secret", author: "Freida McFadden" },
+            { id: 40, name: "Too Good to Be True", author: "Prajakta Koli" },
+            { id: 41, name: "Call Me by Your Name", author: "André Aciman" },
+            { id: 42, name: "Addicted to You", author: "Krista Ritchie" },
+            { id: 43, name: "If Only I Had Told Her", author: "Laura Nowlin" },
+            { id: 44, name: "If He Had Been with Me", author: "Laura Nowlin" },
+            { id: 45, name: "Everything I Left Unsaid", author: "M. O'Keefe" },
+            { id: 46, name: "U n Me...It's Complicated!", author: "Aditya Nighhot" },
+            { id: 47, name: "Where's Molly", author: "H.D. Carlton" },
+            { id: 48, name: "I Don't Love You Anymore", author: "Rithvik Singh" },
+            { id: 49, name: "The Head And The Heart", author: "Aishwarya Iyer" },
+            { id: 50, name: "Men Without Women", author: "Haruki Murakami" },
+            { id: 51, name: "How to Kill Men and Get Away With It", author: "Katy Brent" },
+            { id: 52, name: "Vengeance of the Pirate Queen", author: "Tricia Levenseller" },
+            { id: 53, name: "Toxic", author: "Nicole Blanchard" },
+            { id: 54, name: "Daughter of the Siren Queen", author: "Tricia Levenseller" },
+            { id: 55, name: "The Locked Door", author: "Freida McFadden" },
+            { id: 56, name: "The Forty Rules of Love", author: "Elif Shafak" },
+            { id: 57, name: "Sometimes I Lie", author: "Alice Feeney" },
+            { id: 58, name: "Ruthless Vows", author: "Rebecca Ross" },
+            { id: 59, name: "As Good as Dead", author: "Holly Jackson" },
+            { id: 60, name: "The Housemaid", author: "Freida McFadden" },
+            { id: 61, name: "The Silent Patient", author: "Alex Michaelides" },
+            { id: 62, name: "Before We Were Strangers", author: "Renée Carlino" },
+            { id: 63, name: "Normal People", author: "Sally Rooney" },
+            { id: 64, name: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid" },
+            { id: 65, name: "Better Than the Movies", author: "Lynn Painter" },
+            { id: 66, name: "White Night (Spanish Edition)", author: "Fyodor Dostoevsky" },
+            { id: 67, name: "Divine Rivals", author: "Rebecca Ross" },
+            { id: 68, name: "Good Girl, Bad Blood", author: "Holly Jackson" },
+            { id: 69, name: "A Good Girl's Guide to Murder", author: "Holly Jackson" },
+            { id: 70, name: "It Ends with Us", author: "Colleen Hoover" },
+            { id: 71, name: "Twisted Love", author: "Ana Huang" },
+            { id: 72, name: "Daughter of the Pirate King", author: "Tricia Levenseller" },
+            { id: 73, name: "The Seven Year Slip", author: "Ashley Poston" },
+            { id: 74, name: "Will You Still Love Me?", author: "Ravinder Singh" },
+            { id: 75, name: "You've Reached Sam", author: "Dustin Thao" },
+            { id: 76, name: "The Love Hypothesis", author: "Ali Hazelwood" },
+            { id: 77, name: "It Starts with Us", author: "Colleen Hoover" },
+            { id: 78, name: "Verity", author: "Colleen Hoover" },
+            { id: 79, name: "The Notebook", author: "Nicholas Sparks" }
+        ];
+
+        // Load data from localStorage or create new
+        function loadData() {
+            const saved = localStorage.getItem('bookReelData');
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        function saveData(data) {
+            localStorage.setItem('bookReelData', JSON.stringify(data));
+        }
+
+        let bookData = loadData();
+
+        function renderBooks() {
+            const booksList = document.getElementById('booksList');
+            booksList.innerHTML = '';
+
+            books.forEach((book) => {
+                if (!bookData[book.id]) {
+                    bookData[book.id] = {
+                        targetDate: '',
+                        shootDate: '',
+                        editDates: '',
+                        postDate: '',
+                        status: 'normal',
+                        script: ''
+                    };
+                }
+
+                const data = bookData[book.id];
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+
+                const statusClass = data.status;
+
+                bookItem.classList.add(statusClass);
+
+                bookItem.innerHTML = `
+                    <div class="book-header" onclick="toggleBook(${book.id})">
+                        <div class="book-index">${book.id}</div>
+                        <div class="book-name" title="${book.name}">${book.name}</div>
+                        <div class="book-author" title="${book.author}">${book.author}</div>
+                        <input class="date-input" type="date" value="${data.targetDate}" onclick="event.stopPropagation()" onchange="updateField(${book.id}, 'targetDate', this.value)">
+                        <input class="date-input" type="date" value="${data.shootDate}" onclick="event.stopPropagation()" onchange="updateField(${book.id}, 'shootDate', this.value)">
+                        <input class="date-input" type="text" placeholder="e.g. Jan 5-10" value="${data.editDates}" onclick="event.stopPropagation()" onchange="updateField(${book.id}, 'editDates', this.value)">
+                        <input class="date-input" type="date" value="${data.postDate}" onclick="event.stopPropagation()" onchange="updateField(${book.id}, 'postDate', this.value)">
+                        <select onclick="event.stopPropagation()" onchange="updateField(${book.id}, 'status', this.value)">
+                            <option value="normal" ${data.status === 'normal' ? 'selected' : ''}>Not Started</option>
+                            <option value="script-written" ${data.status === 'script-written' ? 'selected' : ''}>Script Written</option>
+                            <option value="shooting-completed" ${data.status === 'shooting-completed' ? 'selected' : ''}>Shooting Done</option>
+                            <option value="posted" ${data.status === 'posted' ? 'selected' : ''}>Posted</option>
+                        </select>
+                        <button class="expand-btn" id="btn-${book.id}"></button>
+                    </div>
+                    <div class="book-content" id="content-${book.id}">
+                        <div class="details-grid">
+                            <div class="form-group">
+                                <label>Target Date</label>
+                                <input type="date" value="${data.targetDate}" onchange="updateField(${book.id}, 'targetDate', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Shoot Date</label>
+                                <input type="date" value="${data.shootDate}" onchange="updateField(${book.id}, 'shootDate', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Edit Dates</label>
+                                <input type="text" placeholder="e.g. Jan 5-10" value="${data.editDates}" onchange="updateField(${book.id}, 'editDates', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Post Date</label>
+                                <input type="date" value="${data.postDate}" onchange="updateField(${book.id}, 'postDate', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select onchange="updateField(${book.id}, 'status', this.value)">
+                                    <option value="normal" ${data.status === 'normal' ? 'selected' : ''}>Not Started</option>
+                                    <option value="script-written" ${data.status === 'script-written' ? 'selected' : ''}>Script Written</option>
+                                    <option value="shooting-completed" ${data.status === 'shooting-completed' ? 'selected' : ''}>Shooting Done</option>
+                                    <option value="posted" ${data.status === 'posted' ? 'selected' : ''}>Posted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="script-section">
+                            <h3>📝 Script for #${book.id} - ${book.name}</h3>
+                            <textarea class="script-textarea" placeholder="Add script here..." id="script-${book.id}">${data.script}</textarea>
+                            <button class="save-btn" onclick="saveScript(${book.id})">Save Script</button>
+                        </div>
+                    </div>
+                `;
+
+                booksList.appendChild(bookItem);
+            });
+        }
+
+        function toggleBook(id) {
+            const content = document.getElementById(`content-${id}`);
+            const btn = document.getElementById(`btn-${id}`);
+            content.classList.toggle('show');
+            btn.classList.toggle('expanded');
+        }
+
+        function updateField(id, field, value) {
+            bookData[id][field] = value;
+            saveData(bookData);
+            renderBooks(); // Re-render books to update row colors
+        }
+
+        function saveScript(id) {
+            const textarea = document.getElementById(`script-${id}`);
+            bookData[id].script = textarea.value;
+            saveData(bookData);
+            alert('Script saved!');
+        }
+
+        // Initial render
+        renderBooks();
+    </script>
+</body>
+</html>
