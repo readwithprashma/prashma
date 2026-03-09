@@ -1,29 +1,1319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pookie Hero</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; }
-        header { background: #f8f9fa; padding: 10px; }
-        nav { margin: 10px 0; }
-        nav a { margin: 0 15px; text-decoration: none; color: #007bff; }
-        .hero { padding: 50px; text-align: center; background: #007bff; color: white; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashma Shah — Reader & Storyteller</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #fce8ef;
+    --rose: #f7c5d5;
+    --petal: #f2a0bc;
+    --bloom: #e8759a;
+    --deep: #c4476b;
+    --soft: #fdf4f7;
+    --cream: #fefafb;
+    --text: #3a1f2b;
+    --muted: #8b5a6b;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── DECORATIVE ELEMENTS ── */
+  .petal-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(254, 250, 251, 0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(247, 197, 213, 0.5);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--deep);
+    letter-spacing: 0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--deep); }
+
+  /* hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--deep);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 57px; left: 0; right: 0;
+    background: rgba(254,250,251,0.98);
+    backdrop-filter: blur(20px);
+    z-index: 99;
+    padding: 20px 24px 28px;
+    border-bottom: 1px solid var(--rose);
+    flex-direction: column;
+    gap: 16px;
+    animation: slideDown 0.3s ease;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--blush);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--deep); }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding-top: 57px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 60px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 80% 20%, rgba(242,160,188,0.2) 0%, transparent 65%),
+      radial-gradient(ellipse 500px 400px at 10% 90%, rgba(247,197,213,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 400px 300px at 50% 50%, rgba(252,232,239,0.3) 0%, transparent 70%),
+      var(--cream);
+    z-index: 0;
+  }
+
+  /* floating petals bg */
+  .hero-petal { position: absolute; z-index: 0; opacity: 0.6; animation: floatPetal linear infinite; pointer-events: none; }
+
+  @keyframes floatPetal {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    border: 1.5px solid var(--rose);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--deep);
+    font-weight: 700;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(196,71,107,0.1);
+    animation: fadeUp 0.8s ease both;
+  }
+
+  /* PROFILE IMAGE */
+  .profile-wrap {
+    position: relative;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .profile-blob {
+    width: 220px;
+    height: 220px;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    background: linear-gradient(135deg, var(--rose), var(--petal), var(--bloom));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: morphBlob 7s ease-in-out infinite;
+    box-shadow: 0 20px 60px rgba(196,71,107,0.25);
+    margin: 0 auto;
+  }
+
+  @keyframes morphBlob {
+    0%, 100% { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+    25% { border-radius: 40% 60% 45% 55% / 52% 42% 58% 48%; }
+    50% { border-radius: 52% 48% 60% 40% / 45% 55% 45% 55%; }
+    75% { border-radius: 48% 52% 37% 63% / 58% 45% 55% 42%; }
+  }
+
+  .profile-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    overflow: hidden;
+    animation: morphBlob 7s ease-in-out infinite;
+  }
+
+  .profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* floating tags around photo */
+  .float-badge {
+    position: absolute;
+    background: var(--white);
+    border: 1.5px solid var(--rose);
+    border-radius: 40px;
+    padding: 7px 13px;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 6px 20px rgba(196,71,107,0.12);
+    white-space: nowrap;
+  }
+  .float-badge svg { color: var(--deep); flex-shrink: 0; }
+  .fb-1 { top: 0; right: -10px; animation: float 3.5s ease-in-out infinite; }
+  .fb-2 { bottom: 20px; left: -15px; animation: float 4s ease-in-out infinite 1s; }
+  .fb-3 { top: 60px; left: -20px; animation: float 3s ease-in-out infinite 0.5s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 8vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 6px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--deep);
+    display: block;
+    font-weight: 400;
+    font-size: 0.75em;
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-p {
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: var(--muted);
+    max-width: 380px;
+    margin: 0 auto 36px;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .btn-primary {
+    padding: 13px 28px;
+    background: var(--deep);
+    color: var(--white);
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    border: 2px solid var(--deep);
+  }
+  .btn-primary:hover {
+    background: var(--text);
+    border-color: var(--text);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(58,31,43,0.25);
+  }
+
+  .btn-secondary {
+    padding: 13px 28px;
+    background: transparent;
+    color: var(--deep);
+    border: 2px solid var(--petal);
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .btn-secondary:hover {
+    background: var(--blush);
+    border-color: var(--deep);
+    transform: translateY(-2px);
+  }
+
+  /* scrolling hearts divider */
+  .hearts-divider {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 18px 0;
+    background: linear-gradient(90deg, var(--blush), var(--rose), var(--blush));
+    border-top: 1px solid var(--rose);
+    border-bottom: 1px solid var(--rose);
+  }
+  .hearts-track {
+    display: inline-block;
+    animation: scrollTrack 20s linear infinite;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--deep);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  @keyframes scrollTrack {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS BASE ── */
+  section { position: relative; }
+
+  .section-inner {
+    padding: 72px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bloom);
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--petal);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--deep); font-weight: 400; }
+
+  /* ── ABOUT ── */
+  .about { background: var(--soft); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .about-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .about-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    background: var(--white);
+    border: 1.5px solid var(--rose);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--text);
+    font-weight: 400;
+    transition: all 0.25s;
+  }
+  .about-pill:hover {
+    border-color: var(--bloom);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(196,71,107,0.12);
+  }
+  .about-pill svg { color: var(--deep); }
+
+  .about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1.5px solid var(--rose);
+    border-radius: 22px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(196,71,107,0.12);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--petal), var(--bloom));
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── BOOKSTAGRAM ── */
+  .bookstagram { background: var(--cream); }
+  .bookstagram .section-inner { text-align: center; }
+  .bookstagram .section-label { justify-content: center; }
+  .bookstagram .section-label::before { display: none; }
+
+  .bookstagram-p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 48px;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .content-card {
+    background: var(--soft);
+    border: 1.5px solid var(--rose);
+    border-radius: 20px;
+    padding: 24px 14px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .content-card:hover {
+    background: var(--white);
+    border-color: var(--bloom);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 36px rgba(196,71,107,0.13);
+  }
+  .content-card svg { margin-bottom: 10px; color: var(--deep); }
+  .content-card-label { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── GENRES ── */
+  .genres { background: linear-gradient(150deg, var(--blush) 0%, var(--soft) 100%); }
+
+  .genres-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .genres-text p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .genre-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 10px;
+  }
+
+  .genre-pill {
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.25s;
+    cursor: default;
+    letter-spacing: 0.02em;
+  }
+  .genre-pill.filled { background: var(--deep); color: var(--white); }
+  .genre-pill.outline { background: transparent; border: 1.5px solid var(--petal); color: var(--deep); }
+  .genre-pill:hover { transform: scale(1.05); box-shadow: 0 6px 18px rgba(196,71,107,0.2); }
+
+  .genre-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.55;
+    padding-left: 24px;
+    position: relative;
+  }
+  .genre-quote::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 4px;
+    width: 3px;
+    height: calc(100% - 8px);
+    background: linear-gradient(to bottom, var(--petal), var(--bloom));
+    border-radius: 3px;
+  }
+  .quote-attr {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 14px;
+    padding-left: 24px;
+    letter-spacing: 0.05em;
+    font-style: normal;
+  }
+
+  /* ── COLLABS ── */
+  .collabs { background: var(--blush); }
+
+  .collabs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .collabs-text p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .collab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .collab-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    background: var(--white);
+    border-radius: 14px;
+    border: 1.5px solid var(--rose);
+    font-size: 0.86rem;
+    color: var(--text);
+    transition: all 0.25s;
+  }
+  .collab-item:hover { border-color: var(--bloom); transform: translateX(5px); }
+  .collab-item svg { color: var(--deep); flex-shrink: 0; }
+
+  .collabs-cta {
+    background: var(--white);
+    border: 1.5px solid var(--rose);
+    border-radius: 28px;
+    padding: 44px 36px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(196,71,107,0.1);
+  }
+  .collabs-cta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .collabs-cta p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin-bottom: 26px;
+  }
+
+  /* ── INSTAGRAM ── */
+  .instagram-section { background: var(--soft); }
+  .instagram-section .section-inner { text-align: center; }
+  .instagram-section .section-label { justify-content: center; }
+  .instagram-section .section-label::before { display: none; }
+
+  .insta-handle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--deep);
+    font-style: italic;
+    display: block;
+    margin: 16px 0;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .insta-handle:hover { opacity: 0.75; }
+
+  .insta-p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.85;
+    max-width: 450px;
+    margin: 0 auto 36px;
+  }
+
+  .ig-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 40px 0;
+  }
+
+  .ig-tile {
+    width: 120px;
+    height: 150px;
+    border-radius: 18px;
+    border: 2px solid var(--rose);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .ig-tile:hover {
+    transform: translateY(-8px) scale(1.04);
+    border-color: var(--bloom);
+    box-shadow: 0 14px 36px rgba(196,71,107,0.18);
+  }
+  .ig-tile-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+  }
+  .ig-tile span { font-size: 0.68rem; text-align: center; line-height: 1.4; }
+
+  /* ── CONTACT ── */
+  .contact-section { background: var(--cream); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .contact-text p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 30px;
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-method {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--soft);
+    border: 1.5px solid var(--rose);
+    border-radius: 18px;
+    transition: all 0.25s;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .contact-method:hover { border-color: var(--bloom); background: var(--blush); transform: translateX(5px); }
+  .contact-method-icon {
+    width: 42px; height: 42px;
+    background: var(--blush);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--deep);
+    flex-shrink: 0;
+    transition: background 0.25s;
+  }
+  .contact-method:hover .contact-method-icon { background: var(--rose); }
+  .contact-method-info h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
+  .contact-method-info p { font-size: 0.79rem; color: var(--muted); margin: 0; }
+
+  .contact-card {
+    background: linear-gradient(135deg, var(--blush) 0%, var(--rose) 100%);
+    border: 1.5px solid var(--petal);
+    border-radius: 28px;
+    padding: 44px 36px;
+    text-align: center;
+    box-shadow: 0 24px 70px rgba(196,71,107,0.16);
+  }
+  .contact-card svg { color: var(--deep); margin-bottom: 18px; }
+  .contact-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .contact-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    padding: 52px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--bloom), transparent);
+  }
+  .footer-deco {
+    position: absolute;
+    top: -120px; left: 50%;
+    transform: translateX(-50%);
+    width: 350px; height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,117,154,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-tagline {
+    font-size: 0.74rem;
+    color: rgba(253,244,247,0.45);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-links a {
+    font-size: 0.75rem;
+    color: rgba(253,244,247,0.45);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--petal); }
+  .footer-hearts {
+    font-size: 0.85rem;
+    color: var(--bloom);
+    margin-bottom: 10px;
+    letter-spacing: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-copy {
+    font-size: 0.74rem;
+    color: rgba(253,244,247,0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--soft); }
+  ::-webkit-scrollbar-thumb { background: var(--petal); border-radius: 3px; }
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .hero { padding-top: 57px; padding-bottom: 50px; }
+
+    .profile-blob, .profile-img {
+      width: 180px;
+      height: 180px;
+    }
+    .fb-1 { top: -8px; right: -16px; }
+    .fb-2 { bottom: 8px; left: -20px; }
+    .fb-3 { top: 50px; left: -22px; font-size: 0.68rem; padding: 5px 10px; }
+
+    .section-inner { padding: 56px 20px; }
+
+    .about-grid,
+    .genres-grid,
+    .collabs-grid,
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    .about-cards { flex-direction: row; flex-wrap: wrap; }
+    .stat-card { flex: 1 1 calc(50% - 7px); min-width: 130px; }
+
+    .content-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    /* hide last 2 on very small */
+    @media (max-width: 380px) {
+      .content-grid { grid-template-columns: repeat(2, 1fr); }
+      .content-card:last-child { display: none; }
+    }
+
+    .genre-quote { font-size: 1.25rem; }
+
+    .ig-tile { width: 100px; height: 128px; }
+    .ig-tile:nth-child(n+4) { display: none; }
+
+    .collabs-cta { padding: 32px 24px; }
+    .contact-card { padding: 32px 24px; }
+
+    footer { padding: 44px 20px 36px; }
+    .footer-links { gap: 14px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-btns { flex-direction: column; align-items: center; }
+    .hero-btns a { width: 100%; max-width: 280px; justify-content: center; }
+    .about-cards { flex-direction: column; }
+    .stat-card { flex: none; }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <a href="growth.html">🌸 Personal Growth</a>
-        </nav>
-    </header>
-    <section class="hero">
-        <h1>Welcome to the Pookie World!</h1>
-        <p>Your adventure starts here.</p>
-    </section>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Prashma Shah</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#bookstagram">Bookstagram</a></li>
+    <li><a href="#genres">Genres</a></li>
+    <li><a href="#collabs">Collabs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#bookstagram" onclick="closeMenu()">Bookstagram</a>
+  <a href="#genres" onclick="closeMenu()">Genres</a>
+  <a href="#collabs" onclick="closeMenu()">Collabs</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- floating petals -->
+  <div class="hero-petal" style="left:10%;width:10px;height:10px;background:rgba(242,160,188,0.5);border-radius:50%;animation-duration:12s;animation-delay:0s;"></div>
+  <div class="hero-petal" style="left:25%;width:7px;height:7px;background:rgba(247,197,213,0.6);border-radius:50%;animation-duration:9s;animation-delay:2s;"></div>
+  <div class="hero-petal" style="left:70%;width:12px;height:12px;background:rgba(232,117,154,0.35);border-radius:50%;animation-duration:14s;animation-delay:1s;"></div>
+  <div class="hero-petal" style="left:85%;width:8px;height:8px;background:rgba(242,160,188,0.5);border-radius:50%;animation-duration:10s;animation-delay:3s;"></div>
+  <div class="hero-petal" style="left:50%;width:6px;height:6px;background:rgba(196,71,107,0.25);border-radius:50%;animation-duration:11s;animation-delay:4s;"></div>
+
+  <div class="hero-content">
+    <span class="hero-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Reader · Storyteller · Creator
+    </span>
+
+    <div class="profile-wrap">
+      <div class="profile-blob">
+        <div class="profile-img">
+          <img src="https://harsh-patel-softwaredev.vercel.app/prashma/prashma.png" alt="Prashma Shah" />
+        </div>
+      </div>
+      <div class="float-badge fb-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Book Lover
+      </div>
+      <div class="float-badge fb-2">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Bookstagrammer
+      </div>
+      <div class="float-badge fb-3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.82 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.73 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Doctor
+      </div>
+    </div>
+
+    <h1 class="hero-name">
+      Prashma Shah
+      <em>A Doctor Who Fell in Love With Books</em>
+    </h1>
+    <p class="hero-sub">Welcome to my little corner of the internet ✨</p>
+    <p class="hero-p">
+      Where stories heal, characters become friends, and books feel like home. I'm Prashma — a passionate reader and storyteller behind <strong>@read.with.prashma</strong>, sharing the books that moved me, broke me, and sometimes changed my life.
+    </p>
+    <div class="hero-btns">
+      <a href="#bookstagram" class="btn-primary">Explore My World</a>
+      <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="btn-secondary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Follow Along
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SCROLLING DIVIDER -->
+<div class="hearts-divider">
+  <span class="hearts-track">
+    ♡ book lover &nbsp;&nbsp; ✦ reader &nbsp;&nbsp; ♡ storyteller &nbsp;&nbsp; ✦ bookstagrammer &nbsp;&nbsp; ♡ doctor &nbsp;&nbsp; ✦ dreamer &nbsp;&nbsp; ♡ read with prashma &nbsp;&nbsp; ✦ book lover &nbsp;&nbsp; ♡ reader &nbsp;&nbsp; ✦ storyteller &nbsp;&nbsp; ♡ bookstagrammer &nbsp;&nbsp; ✦ doctor &nbsp;&nbsp; ♡ dreamer &nbsp;&nbsp; ✦ read with prashma &nbsp;&nbsp;
+    ♡ book lover &nbsp;&nbsp; ✦ reader &nbsp;&nbsp; ♡ storyteller &nbsp;&nbsp; ✦ bookstagrammer &nbsp;&nbsp; ♡ doctor &nbsp;&nbsp; ✦ dreamer &nbsp;&nbsp; ♡ read with prashma &nbsp;&nbsp; ✦ book lover &nbsp;&nbsp; ♡ reader &nbsp;&nbsp; ✦ storyteller &nbsp;&nbsp; ♡ bookstagrammer &nbsp;&nbsp; ✦ doctor &nbsp;&nbsp; ♡ dreamer &nbsp;&nbsp; ✦ read with prashma &nbsp;&nbsp;
+  </span>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">My Story</p>
+        <h2 class="section-title">About <em>Me</em></h2>
+        <p>Hi, I'm Prashma Shah. By profession, I'm a doctor, but beyond the hospital walls I live in a world of stories, emotions, and characters.</p>
+        <p>Reading has always been my escape — a place where imagination, emotions, and perspectives come alive. What started as a personal passion eventually turned into <strong>@read.with.prashma</strong>, a growing community of readers who love discovering meaningful stories together.</p>
+        <p>For me, books are not just stories — they are experiences that stay with you forever.</p>
+
+        <div class="about-pills">
+          <div class="about-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Honest reviews
+          </div>
+          <div class="about-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Emotional quotes
+          </div>
+          <div class="about-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            A cozy community
+          </div>
+          <div class="about-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            Cinematic reels
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cards reveal">
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Books read & loved forever</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Years of Bookstagram storytelling</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Mission — make the world read more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKSTAGRAM -->
+<section class="bookstagram" id="bookstagram">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Instagram</p>
+      <h2 class="section-title">My <em>Bookstagram</em> Journey</h2>
+      <p class="bookstagram-p">Through <strong>@read.with.prashma</strong>, I document my reading life and share the magic of books with thousands of readers. Emotion-driven content that connects readers with stories they will never forget.</p>
+    </div>
+
+    <div class="content-grid reveal">
+      <div class="content-card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <div class="content-card-label">Book<br>Picks</div>
+      </div>
+      <div class="content-card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="content-card-label">Honest<br>Reviews</div>
+      </div>
+      <div class="content-card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="content-card-label">Book<br>Quotes</div>
+      </div>
+      <div class="content-card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        <div class="content-card-label">Book<br>Reels</div>
+      </div>
+      <div class="content-card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+        <div class="content-card-label">Cozy<br>Moments</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENRES -->
+<section class="genres" id="genres">
+  <div class="section-inner">
+    <div class="genres-grid">
+      <div class="genres-text reveal">
+        <p class="section-label">What I Read</p>
+        <h2 class="section-title">Books <em>I Love</em></h2>
+        <p>My reading taste is deeply emotional and character-driven. I love stories that stay in your mind long after the last page.</p>
+        <p>Books that make you feel something deeply are always my favourite.</p>
+        <div class="genre-pills">
+          <span class="genre-pill filled">Literary Fiction</span>
+          <span class="genre-pill outline">Historical Fiction</span>
+          <span class="genre-pill filled">Emotional Dramas</span>
+          <span class="genre-pill outline">Romance</span>
+          <span class="genre-pill filled">Psychological Stories</span>
+          <span class="genre-pill outline">Character-driven Novels</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <blockquote class="genre-quote">
+          "Books that make you feel something deeply are always my favourite. Stories that stay in your mind long after the last page."
+        </blockquote>
+        <p class="quote-attr">— Prashma Shah</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLABS -->
+<section class="collabs" id="collabs">
+  <div class="section-inner">
+    <div class="collabs-grid">
+      <div class="collabs-text reveal">
+        <p class="section-label">Work Together</p>
+        <h2 class="section-title"><em>Collaborations</em></h2>
+        <p>I love working with authors, publishers, and fellow creators who share the same passion for storytelling. Let's bring great stories to more readers.</p>
+        <div class="collab-list">
+          <div class="collab-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Book Promotions & Campaigns
+          </div>
+          <div class="collab-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Honest Book Reviews
+          </div>
+          <div class="collab-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Author Collaborations
+          </div>
+          <div class="collab-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            Creative Book Reels
+          </div>
+        </div>
+      </div>
+
+      <div class="collabs-cta reveal">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c4476b" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <h3>Let's Create Together</h3>
+        <p>Whether you're an author, publisher, or fellow creator — if you believe in the power of stories, I'd love to connect.</p>
+        <a href="#contact" class="btn-primary" style="display: inline-block; margin-top: 8px;">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Find Me Online</p>
+      <h2 class="section-title">Follow My <em>Reading Journey</em></h2>
+      <p class="insta-p">Most of my content lives on Instagram where I share my reading life through reels, quotes, and book recommendations. Join a community of readers who believe stories can change lives.</p>
+      <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="insta-handle">@read.with.prashma</a>
+
+      <div class="ig-grid">
+        <div class="ig-tile">
+          <div class="ig-tile-inner" style="background: linear-gradient(135deg, #fce8ef, #f7c5d5);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c4476b" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span style="color:#8b5a6b;">Book Review</span>
+          </div>
+        </div>
+        <div class="ig-tile">
+          <div class="ig-tile-inner" style="background: linear-gradient(135deg, #f7c5d5, #e8759a);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span style="color:#fff;">Book Quote</span>
+          </div>
+        </div>
+        <div class="ig-tile" style="border-color: var(--bloom);">
+          <div class="ig-tile-inner" style="background: linear-gradient(135deg, #3a1f2b, #c4476b);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f7c5d5" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            <span style="color:#fce8ef;">Book Reel</span>
+          </div>
+        </div>
+        <div class="ig-tile">
+          <div class="ig-tile-inner" style="background: linear-gradient(135deg, #f2a0bc, #f7c5d5);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c4476b" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+            <span style="color:#3a1f2b;">Cozy Reads</span>
+          </div>
+        </div>
+        <div class="ig-tile">
+          <div class="ig-tile-inner" style="background: linear-gradient(135deg, #fce8ef, #e8759a);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span style="color:#fff;">Top Picks</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="btn-secondary" style="display: inline-flex; margin: 0 auto;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Follow on Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-text reveal">
+        <p class="section-label">Say Hello</p>
+        <h2 class="section-title">Get in <em>Touch</em></h2>
+        <p>Whether it's about books, collaborations, or just sharing your favourite reads — I'd love to hear from you.</p>
+        <div class="contact-methods">
+          <a href="mailto:readwithprashma@gmail.com" class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="contact-method-info">
+              <h4>Email Me</h4>
+              <p>readwithprashma@gmail.com</p>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+            <div class="contact-method-info">
+              <h4>Instagram DM</h4>
+              <p>@read.with.prashma</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-card">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <h3>Let's Connect Over Books</h3>
+          <p>Every great friendship starts with a shared love for a good story. Slide into my DMs and let's talk books!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-deco"></div>
+  <div class="footer-logo">Prashma Shah</div>
+  <div class="footer-tagline">Bookstagrammer · Reader · Story Lover</div>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#bookstagram">Bookstagram</a></li>
+    <li><a href="#genres">Genres</a></li>
+    <li><a href="#collabs">Collabs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-hearts">♡ ✦ ♡ ✦ ♡</div>
+  <p class="footer-copy">© 2026 Prashma Shah · Made with love for books</p>
+</footer>
+
+<script>
+  // Hamburger menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Close menu on outside click
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 130) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? '#c4476b' : '';
+    });
+  });
+</script>
 </body>
 </html>
