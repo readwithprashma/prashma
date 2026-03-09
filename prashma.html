@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashma Shah — Reader & Storyteller</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blush: #fce8ef;
+  --rose: #f7c5d5;
+  --petal: #f2a0bc;
+  --bloom: #e8759a;
+  --deep: #c4476b;
+  --richer: #a83358;
+  --soft: #fdf4f7;
+  --cream: #fefafb;
+  --text: #3a1f2b;
+  --muted: #8b5a6b;
+  --white: #ffffff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;background:rgba(253,244,247,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--rose)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--deep);text-decoration:none}
+.nav-desktop{display:none;gap:28px;list-style:none}
+.nav-desktop a{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:500;transition:color .25s}
+.nav-desktop a:hover{color:var(--deep)}
+.hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--deep);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{position:fixed;top:60px;left:0;right:0;z-index:190;background:rgba(253,244,247,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--rose);max-height:0;overflow:hidden;transition:max-height .4s ease}
+.mobile-menu.open{max-height:300px}
+.mobile-menu a{display:block;padding:14px 24px;font-size:.88rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(247,197,213,.3);transition:color .2s,background .2s}
+.mobile-menu a:hover{color:var(--deep);background:var(--blush)}
+
+/* HERO */
+.hero{min-height:100svh;padding:80px 20px 70px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;gap:0}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 80% 20%,rgba(242,160,188,.2) 0%,transparent 70%),radial-gradient(ellipse 55% 45% at 15% 80%,rgba(247,197,213,.22) 0%,transparent 60%),var(--cream);z-index:0}
+.orb{position:absolute;border-radius:50%;pointer-events:none;z-index:0}
+.orb1{width:280px;height:280px;top:-70px;right:-50px;background:radial-gradient(circle,rgba(232,117,154,.12) 0%,transparent 70%)}
+.orb2{width:180px;height:180px;bottom:50px;left:-30px;background:radial-gradient(circle,rgba(242,160,188,.14) 0%,transparent 70%)}
+
+/* Profile photo */
+.hero-photo{position:relative;display:inline-block;margin-bottom:30px;animation:fadeUp .9s ease both;z-index:1}
+.photo-ring{width:210px;height:210px;border-radius:50%;background:linear-gradient(135deg,var(--rose) 0%,var(--petal) 40%,var(--bloom) 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 50px rgba(196,71,107,.28),0 0 0 7px rgba(247,197,213,.3);animation:pulseRing 3s ease-in-out infinite}
+@keyframes pulseRing{0%,100%{box-shadow:0 16px 50px rgba(196,71,107,.28),0 0 0 7px rgba(247,197,213,.3)}50%{box-shadow:0 20px 60px rgba(196,71,107,.38),0 0 0 12px rgba(247,197,213,.18)}}
+.photo-ring img{width:196px;height:196px;border-radius:50%;object-fit:cover;object-position:center top;display:block;border:3px solid var(--white)}
+
+.badge{position:absolute;background:var(--white);border:1.5px solid var(--rose);border-radius:100px;padding:6px 12px;font-size:.7rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:0 5px 18px rgba(196,71,107,.12);z-index:2}
+.badge svg{color:var(--deep);flex-shrink:0}
+.b1{top:12px;right:-14px;animation:fb 3.5s ease-in-out infinite}
+.b2{bottom:20px;left:-18px;animation:fb 4s ease-in-out infinite .8s}
+@keyframes fb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Hero text */
+.hero-text{position:relative;z-index:1;max-width:500px}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--blush);border:1px solid var(--rose);border-radius:100px;padding:6px 16px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--deep);font-weight:600;margin-bottom:16px;animation:fadeUp .8s .2s ease both}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.1rem,8vw,3.6rem);font-weight:400;line-height:1.1;margin-bottom:6px;animation:fadeUp .8s .3s ease both}
+.hero-h1 em{font-style:italic;color:var(--deep);display:block;font-size:.87em}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,3.2vw,1.15rem);font-style:italic;color:var(--muted);margin-bottom:14px;font-weight:300;animation:fadeUp .8s .4s ease both}
+.hero-p{font-size:.87rem;line-height:1.85;color:var(--muted);margin-bottom:28px;animation:fadeUp .8s .5s ease both}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .6s ease both}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:none;flex-direction:column;align-items:center;gap:5px;color:var(--muted);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;z-index:1}
+.scroll-arrow{width:18px;height:18px;border-right:2px solid var(--petal);border-bottom:2px solid var(--petal);transform:rotate(45deg);animation:bd 1.5s ease-in-out infinite}
+@keyframes bd{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(4px)}}
+
+/* Buttons */
+.btn-primary{padding:12px 26px;background:var(--deep);color:var(--white);border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.04em;transition:all .3s;border:2px solid var(--deep);display:inline-flex;align-items:center;gap:7px}
+.btn-primary:hover{background:var(--richer);border-color:var(--richer);transform:translateY(-2px);box-shadow:0 10px 28px rgba(196,71,107,.3)}
+.btn-outline{padding:12px 26px;background:transparent;color:var(--deep);border:2px solid var(--petal);border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.04em;transition:all .3s;display:inline-flex;align-items:center;gap:7px}
+.btn-outline:hover{background:var(--blush);border-color:var(--deep);transform:translateY(-2px)}
+
+/* SECTIONS */
+section{padding:68px 20px;position:relative}
+.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bloom);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.section-label::before{content:'';display:block;width:26px;height:1.5px;background:var(--petal);flex-shrink:0}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.85rem,6vw,2.9rem);font-weight:400;line-height:1.15;color:var(--text);margin-bottom:18px}
+.section-title em{font-style:italic;color:var(--deep)}
+
+/* ABOUT */
+.about{background:var(--soft)}
+.about-inner{max-width:880px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:36px}
+.about-p{font-size:.92rem;line-height:1.9;color:var(--muted);margin-bottom:12px}
+.hl-list{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.hl-item{display:flex;align-items:center;gap:13px;padding:13px 16px;background:var(--white);border-radius:13px;border:1px solid var(--rose);font-size:.86rem;color:var(--text);font-weight:500;transition:all .3s}
+.hl-item:hover{border-color:var(--petal);transform:translateX(4px);box-shadow:0 4px 18px rgba(196,71,107,.08)}
+.hl-item svg{color:var(--deep);flex-shrink:0}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat-card{background:var(--white);border:1.5px solid var(--rose);border-radius:18px;padding:22px 14px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--rose),var(--bloom))}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(196,71,107,.1)}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:500;color:var(--deep);line-height:1;margin-bottom:5px}
+.stat-label{font-size:.68rem;color:var(--muted);line-height:1.4}
+.quote-mini{background:var(--white);border:1.5px solid var(--rose);border-radius:18px;padding:26px 22px;position:relative;overflow:hidden;margin-top:16px}
+.quote-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--rose),var(--bloom))}
+.quote-mini-text{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--text);line-height:1.55;margin-bottom:8px}
+.quote-mini-attr{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
+
+/* BOOKSTAGRAM */
+.bookstagram{background:var(--cream);text-align:center}
+.bookstagram .section-label{justify-content:center}
+.bookstagram .section-label::before{display:none}
+.bks-p{font-size:.91rem;line-height:1.85;color:var(--muted);max-width:540px;margin:0 auto 36px}
+.content-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:440px;margin:0 auto}
+.content-card{background:var(--soft);border:1.5px solid var(--rose);border-radius:18px;padding:26px 14px;transition:all .3s}
+.content-card:hover{background:var(--white);border-color:var(--petal);transform:translateY(-5px);box-shadow:0 12px 32px rgba(196,71,107,.12)}
+.content-card svg{color:var(--deep);margin:0 auto 10px;display:block}
+.cc-label{font-size:.78rem;color:var(--muted);line-height:1.5;font-weight:500}
+.cg-last{grid-column:1/-1;max-width:200px;margin:0 auto;width:100%}
+
+/* GENRES */
+.genres{background:linear-gradient(160deg,var(--blush) 0%,var(--soft) 100%)}
+.genres-inner{max-width:880px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:36px}
+.genre-pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.gp{padding:8px 18px;border-radius:100px;font-size:.8rem;font-weight:500;transition:all .3s;cursor:default}
+.gp.f{background:var(--deep);color:var(--white)}
+.gp.o{background:transparent;border:1.5px solid var(--petal);color:var(--deep)}
+.gp:hover{transform:scale(1.05);box-shadow:0 5px 18px rgba(196,71,107,.2)}
+.quote-card{background:var(--white);border:1.5px solid var(--rose);border-radius:22px;padding:32px 26px;position:relative;overflow:hidden}
+.quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,var(--rose),var(--bloom),var(--deep))}
+.big-q{font-family:'Cormorant Garamond',serif;font-size:5rem;line-height:.5;color:var(--rose);margin-bottom:14px;display:block}
+.quote-card-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,3.8vw,1.55rem);font-style:italic;color:var(--text);line-height:1.55}
+.quote-card-attr{font-size:.77rem;color:var(--muted);margin-top:12px;letter-spacing:.08em}
+
+/* BOOKS */
+.books{background:var(--soft)}
+.books-intro{font-size:.91rem;line-height:1.85;color:var(--muted);max-width:500px;margin-bottom:30px}
+.books-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:700px}
+.book-card{background:var(--white);border:1.5px solid var(--rose);border-radius:18px;padding:24px 16px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.book-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--rose),var(--bloom));transform:scaleX(0);transition:transform .3s}
+.book-card:hover{transform:translateY(-7px);box-shadow:0 18px 44px rgba(196,71,107,.13);border-color:var(--petal)}
+.book-card:hover::after{transform:scaleX(1)}
+.bk-icon{margin-bottom:12px;color:var(--deep)}
+.bk-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--text);line-height:1.4}
+.bk-heart{margin-top:9px;color:var(--petal)}
+.bk-last{grid-column:1/-1;max-width:200px;margin:0 auto}
+
+/* PHILOSOPHY */
+.philosophy{background:var(--text);color:var(--cream);text-align:center;position:relative;overflow:hidden}
+.philosophy::before{content:'';position:absolute;top:-150px;left:-150px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(232,117,154,.07) 0%,transparent 70%)}
+.philosophy .section-label{justify-content:center;color:var(--petal)}
+.philosophy .section-label::before{background:var(--bloom)}
+.philosophy .section-title{color:var(--cream)}
+.philosophy .section-title em{color:var(--petal)}
+.philo-sub{color:rgba(253,244,247,.6);font-size:.9rem;line-height:1.8;max-width:500px;margin:0 auto}
+.philo-grid{display:grid;grid-template-columns:1fr;gap:14px;max-width:780px;margin:32px auto 0;position:relative;z-index:1}
+.philo-card{background:rgba(255,255,255,.06);border:1px solid rgba(232,117,154,.2);border-radius:18px;padding:28px 22px;transition:all .3s;text-align:left}
+.philo-card:hover{background:rgba(255,255,255,.1);border-color:rgba(232,117,154,.5);transform:translateY(-3px)}
+.philo-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.philo-icon{width:40px;height:40px;background:rgba(232,117,154,.15);border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--petal);flex-shrink:0}
+.philo-card h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--cream);font-weight:400}
+.philo-card p{font-size:.86rem;line-height:1.75;color:rgba(253,244,247,.58)}
+
+/* COLLABS */
+.collabs{background:var(--blush)}
+.collabs-inner{max-width:880px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:36px}
+.collabs-text p{font-size:.91rem;line-height:1.85;color:var(--muted);margin-bottom:22px}
+.collab-list{display:flex;flex-direction:column;gap:9px}
+.collab-item{display:flex;align-items:center;gap:13px;padding:13px 16px;background:var(--white);border-radius:13px;border:1.5px solid var(--rose);font-size:.86rem;color:var(--text);font-weight:500;transition:all .3s}
+.collab-item:hover{border-color:var(--bloom);transform:translateX(5px);box-shadow:0 4px 18px rgba(196,71,107,.1)}
+.collab-item svg{color:var(--deep);flex-shrink:0}
+.cta-card{background:var(--white);border:1.5px solid var(--rose);border-radius:26px;padding:40px 28px;text-align:center;box-shadow:0 18px 54px rgba(196,71,107,.12)}
+.cta-icon{width:66px;height:66px;background:var(--blush);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:var(--deep)}
+.cta-card h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--text);margin-bottom:9px;font-weight:400}
+.cta-card p{color:var(--muted);font-size:.88rem;line-height:1.7;margin-bottom:24px}
+
+/* INSTAGRAM */
+.instagram{background:var(--soft);text-align:center}
+.instagram .section-label{justify-content:center}
+.instagram .section-label::before{display:none}
+.ig-handle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,6vw,2.8rem);color:var(--deep);font-style:italic;display:block;margin:14px 0;text-decoration:none;transition:color .3s}
+.ig-handle:hover{color:var(--richer)}
+.ig-p{color:var(--muted);font-size:.9rem;line-height:1.8;max-width:420px;margin:0 auto 32px}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:340px;margin:0 auto 36px}
+.ig-tile{aspect-ratio:1;border-radius:14px;border:2px solid var(--rose);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;transition:all .3s;overflow:hidden}
+.ig-tile:hover{transform:scale(1.05);border-color:var(--bloom);box-shadow:0 9px 26px rgba(196,71,107,.18)}
+.ig-tile span{font-size:.63rem;font-weight:600;letter-spacing:.05em;text-align:center;padding:0 4px}
+
+/* CONTACT */
+.contact{background:var(--cream)}
+.contact-inner{max-width:700px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:36px}
+.contact-text p{font-size:.91rem;line-height:1.85;color:var(--muted);margin-bottom:24px}
+.contact-methods{display:flex;flex-direction:column;gap:11px}
+.contact-method{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--soft);border:1.5px solid var(--rose);border-radius:16px;text-decoration:none;color:var(--text);transition:all .3s}
+.contact-method:hover{border-color:var(--bloom);background:var(--blush);transform:translateX(4px)}
+.cm-icon{width:44px;height:44px;background:var(--blush);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--deep);flex-shrink:0;transition:background .3s}
+.contact-method:hover .cm-icon{background:var(--rose)}
+.cm-info h4{font-size:.88rem;font-weight:600;margin-bottom:2px}
+.cm-info p{font-size:.78rem;color:var(--muted)}
+.love-card{background:linear-gradient(135deg,var(--blush) 0%,var(--rose) 100%);border:1.5px solid var(--petal);border-radius:26px;padding:40px 28px;text-align:center;box-shadow:0 22px 55px rgba(196,71,107,.15)}
+.love-card svg{color:var(--deep);margin-bottom:14px}
+.love-card h3{font-family:'Cormorant Garamond',serif;font-size:1.75rem;color:var(--text);margin-bottom:9px;font-weight:400}
+.love-card p{color:var(--muted);font-size:.87rem;line-height:1.7}
+
+/* FOOTER */
+footer{background:var(--text);padding:48px 24px 32px;text-align:center;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--bloom),transparent)}
+.footer-heart{display:inline-flex;width:48px;height:48px;background:rgba(232,117,154,.14);border-radius:14px;align-items:center;justify-content:center;margin-bottom:14px;color:var(--petal)}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:400;color:var(--cream);margin-bottom:5px}
+.footer-tagline{font-size:.72rem;color:rgba(253,244,247,.42);letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.footer-nav{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;list-style:none;margin-bottom:22px}
+.footer-nav a{font-size:.72rem;color:rgba(253,244,247,.42);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;padding:3px 0}
+.footer-nav a:hover{color:var(--petal)}
+.footer-div{width:50px;height:1px;background:rgba(232,117,154,.28);margin:0 auto 16px}
+.footer-copy{font-size:.72rem;color:rgba(253,244,247,.26)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--soft)}
+::-webkit-scrollbar-thumb{background:var(--petal);border-radius:3px}
+
+/* DESKTOP OVERRIDES */
+@media(min-width:700px){
+  nav{padding:0 48px;height:64px}
+  .hamburger{display:none}
+  .nav-desktop{display:flex}
+  .mobile-menu{display:none!important}
+  section{padding:92px 48px}
+  .hero{flex-direction:row;text-align:left;gap:50px;padding:80px 64px;min-height:100svh;justify-content:center}
+  .hero-photo{margin-bottom:0;order:2;flex-shrink:0}
+  .photo-ring{width:310px;height:310px}
+  .photo-ring img{width:294px;height:294px}
+  .hero-text{order:1;max-width:none;flex:1}
+  .hero-btns{justify-content:flex-start}
+  .scroll-hint{display:flex}
+  .about-inner{grid-template-columns:1.2fr 1fr;gap:60px}
+  .genres-inner{grid-template-columns:1fr 1fr;gap:60px}
+  .collabs-inner{grid-template-columns:1fr 1fr;gap:60px}
+  .contact-inner{grid-template-columns:1fr 1fr;gap:56px}
+  .philo-grid{grid-template-columns:repeat(3,1fr)}
+  .content-grid{grid-template-columns:repeat(3,1fr);max-width:600px}
+  .cg-last{grid-column:auto;max-width:none;width:auto;margin:0}
+  .books-grid{grid-template-columns:repeat(5,1fr);max-width:860px}
+  .bk-last{grid-column:auto;max-width:none;margin:0}
+  .ig-grid{grid-template-columns:repeat(5,1fr);max-width:520px}
+  .b1{right:-16px}
+  .b2{left:-20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Prashma Shah</a>
+  <ul class="nav-desktop">
+    <li><a href="#about">About</a></li>
+    <li><a href="#books">Books</a></li>
+    <li><a href="#bookstagram">Bookstagram</a></li>
+    <li><a href="#collabs">Collabs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="ham" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mob">
+  <a href="#about"        onclick="closeMob()">About</a>
+  <a href="#books"        onclick="closeMob()">Books</a>
+  <a href="#bookstagram"  onclick="closeMob()">Bookstagram</a>
+  <a href="#collabs"      onclick="closeMob()">Collabs</a>
+  <a href="#contact"      onclick="closeMob()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <div class="hero-photo">
+    <div class="photo-ring">
+      <img src="https://harsh-patel-softwaredev.vercel.app/prashma/prashma.png" alt="Prashma Shah" />
+    </div>
+    <div class="badge b1">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Book Lover
+    </div>
+    <div class="badge b2">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Bookstagrammer
+    </div>
+  </div>
+
+  <div class="hero-text">
+    <span class="hero-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Reader · Storyteller · Creator
+    </span>
+    <h1 class="hero-h1">Prashma Shah<em>A Doctor Who Fell in Love With Books</em></h1>
+    <p class="hero-sub">Welcome to my little corner of the internet</p>
+    <p class="hero-p">Where stories heal, characters become friends, and books feel like home. I'm Prashma — a passionate reader and creator behind <strong>@read.with.prashma</strong>. Through my reels and posts, I share the books that moved me, broke me, and sometimes changed my life.</p>
+    <div class="hero-btns">
+      <a href="#books" class="btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Explore My Reads
+      </a>
+      <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="btn-outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-arrow"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <p class="section-label">My Story</p>
+      <h2 class="section-title">About <em>Me</em></h2>
+      <p class="about-p">Hi, I'm Prashma Shah. By profession, I'm a doctor, but beyond the hospital walls I live in a world of stories, emotions, and characters.</p>
+      <p class="about-p">Reading has always been my escape — a place where imagination, emotions, and perspectives come alive. What started as a personal passion turned into <strong>@read.with.prashma</strong>, a growing community of readers who love discovering meaningful stories together.</p>
+      <p class="about-p">For me, books are not just stories — they are experiences that stay with you forever.</p>
+      <div class="hl-list">
+        <div class="hl-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Honest book reviews you can trust</div>
+        <div class="hl-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Emotional quotes & aesthetic reels</div>
+        <div class="hl-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>A growing community of readers</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">Books read & loved</div></div>
+        <div class="stat-card"><div class="stat-num">2+</div><div class="stat-label">Years on Bookstagram</div></div>
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">Mission — more readers</div></div>
+      </div>
+      <div class="quote-mini">
+        <p class="quote-mini-text">"Reading is not just a hobby for me — it's a way of breathing."</p>
+        <p class="quote-mini-attr">— Prashma Shah</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKSTAGRAM -->
+<section class="bookstagram" id="bookstagram">
+  <div class="reveal">
+    <p class="section-label">Instagram</p>
+    <h2 class="section-title">My <em>Bookstagram</em> Journey</h2>
+    <p class="bks-p">Through <strong>@read.with.prashma</strong>, I document my reading life and share the magic of books with thousands of readers online. My content creates emotion-driven stories that connect readers with books they will never forget.</p>
+    <p class="bks-p" style="margin-top:-20px;">From cozy reading aesthetics to powerful book quotes — my goal is simple: <em style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--deep)">to make more people fall in love with reading.</em></p>
+    <div class="content-grid">
+      <div class="content-card"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><div class="cc-label">Book Recommendations</div></div>
+      <div class="content-card"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div class="cc-label">Honest Reviews</div></div>
+      <div class="content-card"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div class="cc-label">Emotional Quotes</div></div>
+      <div class="content-card"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><div class="cc-label">Cinematic Reels</div></div>
+      <div class="content-card cg-last"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg><div class="cc-label">Cozy Moments</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GENRES -->
+<section class="genres" id="genres">
+  <div class="genres-inner">
+    <div class="reveal">
+      <p class="section-label">What I Read</p>
+      <h2 class="section-title">Books <em>I Love</em></h2>
+      <p style="font-size:.91rem;line-height:1.85;color:var(--muted);margin-bottom:6px">My reading taste is deeply emotional and character driven. I love stories that stay in your mind long after the last page.</p>
+      <p style="font-size:.91rem;line-height:1.85;color:var(--muted)">Books that make you <em style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--deep)">feel something deeply</em> are always my favourite.</p>
+      <div class="genre-pills">
+        <span class="gp f">Literary Fiction</span>
+        <span class="gp o">Historical Fiction</span>
+        <span class="gp f">Emotional Dramas</span>
+        <span class="gp o">Romance</span>
+        <span class="gp f">Psychological Stories</span>
+        <span class="gp o">Character-driven Novels</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="quote-card">
+        <span class="big-q">"</span>
+        <p class="quote-card-text">Books that make you feel something deeply are always my favorite. Stories that stay in your mind long after the last page.</p>
+        <p class="quote-card-attr">— Prashma Shah, @read.with.prashma</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKS -->
+<section class="books" id="books">
+  <div class="reveal">
+    <p class="section-label">My Favourites</p>
+    <h2 class="section-title">Books That <em>Stayed With Me</em></h2>
+    <p class="books-intro">Some stories never leave you. These are the books that moved me the most and shaped my reading journey — each left an emotional imprint on me in different ways.</p>
+    <div class="books-grid">
+      <div class="book-card"><div class="bk-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="bk-title">A Thousand Splendid Suns</div><div class="bk-heart"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+      <div class="book-card"><div class="bk-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="bk-title">The Kite Runner</div><div class="bk-heart"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+      <div class="book-card"><div class="bk-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="bk-title">It Ends With Us</div><div class="bk-heart"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+      <div class="book-card"><div class="bk-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="bk-title">The Book Thief</div><div class="bk-heart"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+      <div class="book-card bk-last"><div class="bk-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="bk-title">The Seven Husbands of Evelyn Hugo</div><div class="bk-heart"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="reveal">
+    <p class="section-label">My Why</p>
+    <h2 class="section-title">Why I <em>Read</em></h2>
+    <p class="philo-sub">Reading allows us to live thousands of lives while staying in one. Every book offers a new perspective, a new world, and a deeper understanding of human emotions.</p>
+  </div>
+  <div class="philo-grid reveal">
+    <div class="philo-card"><div class="philo-top"><div class="philo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h3>A Form of Therapy</h3></div><p>Books remind us that even in the hardest moments, stories still exist. Reading is medicine for the soul.</p></div>
+    <div class="philo-card"><div class="philo-top"><div class="philo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h3>Different Lives</h3></div><p>Every book offers a new world and a deeper understanding of human emotions and our shared humanity.</p></div>
+    <div class="philo-card"><div class="philo-top"><div class="philo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Understanding People</h3></div><p>Reading is my way to understand people and emotions — a bridge between hearts across time and space.</p></div>
+  </div>
+</section>
+
+<!-- COLLABS -->
+<section class="collabs" id="collabs">
+  <div class="collabs-inner">
+    <div class="collabs-text reveal">
+      <p class="section-label">Work Together</p>
+      <h2 class="section-title"><em>Collaborations</em></h2>
+      <p>I love working with authors, publishers, and fellow creators who share the same passion for storytelling. Let's bring great stories to more readers together.</p>
+      <div class="collab-list">
+        <div class="collab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Book Promotions & Campaigns</div>
+        <div class="collab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Honest Book Reviews</div>
+        <div class="collab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Author Collaborations</div>
+        <div class="collab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Creative Book Content & Reels</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="cta-card">
+        <div class="cta-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Let's Create Together</h3>
+        <p>Whether you're an author, publisher, or fellow creator — if you believe in the power of stories, I'd love to connect and collaborate.</p>
+        <a href="#contact" class="btn-primary">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram">
+  <div class="reveal">
+    <p class="section-label">Find Me Online</p>
+    <h2 class="section-title">Follow My <em>Reading Journey</em></h2>
+    <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="ig-handle">@read.with.prashma</a>
+    <p class="ig-p">Most of my content lives on Instagram where I share my reading life through reels, quotes, and book recommendations. Join the community who believe stories can change lives.</p>
+    <div class="ig-grid">
+      <div class="ig-tile" style="background:linear-gradient(135deg,#fce8ef,#f7c5d5)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c4476b" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span style="color:#8b5a6b">Reviews</span></div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#f7c5d5,#e8759a)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="color:#fff">Quotes</span></div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#3a1f2b,#c4476b)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f7c5d5" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span style="color:#fce8ef">Reels</span></div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#f2a0bc,#fce8ef)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c4476b" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg><span style="color:#3a1f2b">Cozy</span></div>
+      <div class="ig-tile" style="background:linear-gradient(135deg,#fce8ef,#e8759a)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#fff">Picks</span></div>
+    </div>
+    <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="btn-primary">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Follow on Instagram
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-text reveal">
+      <p class="section-label">Say Hello</p>
+      <h2 class="section-title">Get in <em>Touch</em></h2>
+      <p>Whether it's about books, collaborations, or just sharing your favourite reads — I would love to hear from you.</p>
+      <div class="contact-methods">
+        <a href="mailto:readwithprashma@gmail.com" class="contact-method">
+          <div class="cm-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="cm-info"><h4>Email Me</h4><p>readwithprashma@gmail.com</p></div>
+        </a>
+        <a href="https://www.instagram.com/read.with.prashma" target="_blank" class="contact-method">
+          <div class="cm-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+          <div class="cm-info"><h4>Instagram DM</h4><p>@read.with.prashma</p></div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="love-card">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <h3>Let's Connect Over Books</h3>
+        <p>Every great friendship starts with a shared love for a good story. Slide into my DMs and let's talk books — I'd love to know yours!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-heart"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+  <div class="footer-logo">Prashma Shah</div>
+  <div class="footer-tagline">Bookstagrammer · Reader · Story Lover</div>
+  <ul class="footer-nav">
+    <li><a href="#about">About</a></li>
+    <li><a href="#books">Books</a></li>
+    <li><a href="#bookstagram">Bookstagram</a></li>
+    <li><a href="#collabs">Collabs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-div"></div>
+  <p class="footer-copy">© 2026 Prashma Shah · Made with love for books</p>
+</footer>
+
+<script>
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mob');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+function closeMob() {
+  ham.classList.remove('open');
+  mob.classList.remove('open');
+}
+// Reveal on scroll
+const revEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.09 });
+revEls.forEach(el => obs.observe(el));
+// Active nav highlight
+const secs = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-desktop a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
+  navAs.forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? '#c4476b' : ''; });
+}, { passive: true });
+</script>
+</body>
+</html>
